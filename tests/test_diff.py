@@ -1,4 +1,4 @@
-'''Tests for regtrace.diff.'''
+"""Tests for regtrace.diff."""
 
 from __future__ import annotations
 
@@ -30,26 +30,26 @@ class DiffTests(unittest.TestCase):
         )
 
     def test_heading_paragraph_order_and_kinds(self) -> None:
-        old = Part(
-            "2020-01-01",
-            {"438.2": _section("438.2", "\u00a7 438.2 Definitions.", ("(a)", "A"), ("(b)", "B"), ("(c)", "C"))},
+        old_section = _section("438.2", "\u00a7 438.2 Definitions.", ("(a)", "A"), ("(b)", "B"), ("(c)", "C"))
+        new_section = _section(
+            "438.2",
+            "\u00a7 438.2 Definitions and terms.",
+            ("(a)", "A"),
+            ("(b)", "B2"),
+            ("(d)", "D"),
         )
-        new = Part(
-            "2021-01-01",
-            {
-                "438.2": _section(
-                    "438.2",
-                    "\u00a7 438.2 Definitions and terms.",
-                    ("(a)", "A"),
-                    ("(b)", "B2"),
-                    ("(d)", "D"),
-                )
-            },
-        )
+        old = Part("2020-01-01", {"438.2": old_section})
+        new = Part("2021-01-01", {"438.2": new_section})
         self.assertEqual(
             diff(old, new),
             [
-                Change("438.2", "", "heading_revised", "\u00a7 438.2 Definitions.", "\u00a7 438.2 Definitions and terms."),
+                Change(
+                    "438.2",
+                    "",
+                    "heading_revised",
+                    "\u00a7 438.2 Definitions.",
+                    "\u00a7 438.2 Definitions and terms.",
+                ),
                 Change("438.2", "(b)", "revised", "B", "B2"),
                 Change("438.2", "(d)", "added", None, "D"),
                 Change("438.2", "(c)", "removed", "C", None),

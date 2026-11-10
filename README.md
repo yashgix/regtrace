@@ -21,8 +21,15 @@ Medi-Cal plans and their vendors have to turn a stream of federal and state chan
 owner assignments and audit evidence. The hard part is not fetching a PDF; it is keeping the chain from
 rule text to policy change defensible months later.
 
-Readily describes its product as an AI-native compliance intelligence platform and says it monitors
-federal and state sources, including Federal Register rules. Its own description of the AI surface is:
+Readily describes its product as an AI-native compliance intelligence platform for healthcare:
+
+> Readily is an AI-native compliance intelligence platform for healthcare. It connects regulatory
+> requirements with policies, assigned actions, audits and supporting evidence, so compliance teams can
+> see what changed, who owns the response and whether the work is complete.
+
+Source: <https://www.readily.ai/>
+
+Its own description of the AI surface is:
 
 > Readily uses AI to analyze regulatory updates and documents, flag what applies, identify affected
 > policies, draft redlines and audit assessments, cite supporting evidence and scrub data for errors.
@@ -68,22 +75,18 @@ make test
 make lint
 make data-check
 python experiment.py --out results/metrics.json
-python demo.py --metrics results/metrics.json
+python demo.py --readme README.md
 uvicorn regtrace.api:app --reload
 ```
 
-`make test` runs the `unittest` suite. `make data-check` checks the pinned checksums. `experiment.py`
-writes deterministic metrics. `demo.py` renders a Markdown evidence packet from those metrics and from
-`reconcile()`. The API is read-only.
+`make test` runs the `unittest` suite. `make lint` runs ruff. `make data-check` checks the pinned
+checksums. `experiment.py` writes deterministic metrics. `demo.py` renders the evidence block below
+and, with `--readme`, refreshes it in place; without that flag it prints the same Markdown to stdout,
+so a reviewer can diff the tables without touching this file. The API is read-only.
 
-## Metrics and evidence tables
+## Results
 
-The metrics object is numbers only and is produced by the library, not typed by hand. It includes:
-snapshot dates, section and paragraph counts at the latest date, unlabeled paragraphs, paragraph changes
-between consecutive dates, document/rule/instruction counts, reconciliation tallies, citation self-check
-and perturbation checks, and parser versus baseline precision and recall.
-
-The pinned snapshot fixes these headline counts, which the tests also assert:
+Three counts are fixed by the snapshot and asserted by the test suite:
 
 | item | count |
 |---|---:|
@@ -91,16 +94,23 @@ The pinned snapshot fixes these headline counts, which the tests also assert:
 | Federal Register documents | 45 |
 | Rule documents | 26 |
 
-The remaining values live in `results/metrics.json`. To avoid a stale README, they are rendered from that
-file by `demo.py` rather than copied here. The same renderer produces:
+Every other number here is computed, never typed. `experiment.py` writes a numbers-only metrics
+object (snapshot counts, reconciliation tallies, citation self-checks and perturbation checks, and
+parser-versus-baseline precision and recall) to `results/metrics.json`. `demo.py` renders that object
+together with `reconcile()` into the block below, which is the only generated part of this file.
 
-- an **Unexplained changes** table: every substantive `(section, date)` that no Rule row claims, with the
-  section heading and the next human check;
-- a **Discrepancies** table: every `shifted` or `unmatched` row, with document, section, expected date,
-  eCFR date and status.
+Two of the tables are the point of the project. **Unexplained changes** lists every substantive
+`(section, date)` that no Rule row claims, with the section heading and the next human check.
+**Discrepancies** lists every `shifted` or `unmatched` row with document, section, expected date,
+eCFR date and status. Change the snapshot, re-run `python demo.py --readme README.md`, and both
+tables change with it.
 
-That is the point of the project: the evidence is reproducible. Run `python demo.py` after changing the
-snapshot and the tables change with it.
+<!-- regtrace:evidence:start -->
+
+_Run `python demo.py --readme README.md` to render the metrics, unexplained changes, discrepancies and
+walk-through tables into this block._
+
+<!-- regtrace:evidence:end -->
 
 ## What the statuses mean
 
@@ -163,5 +173,4 @@ SHA-256 and fails if a byte changed. Re-fetching is explicit; tests and the API 
 ## Build note
 
 Built with Arcturus, an AI multi-agent system, and reviewed by an independent model. The code, tests and
-rendered tables are the evidence; no result in this README is a hand-entered number beyond the three
-snapshot counts that the test suite pins.
+rendered tables are the evidence; no number in the generated block is hand-entered.

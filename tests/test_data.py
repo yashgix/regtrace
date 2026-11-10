@@ -1,4 +1,4 @@
-'''Tests for the snapshot loaders in regtrace.data.'''
+"""Tests for the snapshot loaders in regtrace.data."""
 
 from __future__ import annotations
 
@@ -37,6 +37,13 @@ _SNAPSHOT = """\
 </DIV5>
 """
 
+_VERSIONS = {
+    "content_versions": [
+        {"identifier": "438.2", "date": "2020-01-01", "substantive": True},
+        {"identifier": "438.2", "date": "2021-01-01", "substantive": False},
+    ],
+}
+
 _DOCUMENTS = {
     "results": [
         {
@@ -55,7 +62,7 @@ _DOCUMENTS = {
             "publication_date": "2020-02-01",
             "effective_on": None,
         },
-    ]
+    ],
 }
 
 
@@ -82,17 +89,7 @@ class SnapshotTests(unittest.TestCase):
         (self.data_dir / "fr").mkdir()
         for day in ("2020-01-01", "2021-01-01"):
             (self.data_dir / "ecfr" / f"part438-{day}.xml").write_text(_SNAPSHOT, encoding="utf-8")
-        (self.data_dir / "ecfr" / "versions.json").write_text(
-            json.dumps(
-                {
-                    "content_versions": [
-                        {"identifier": "438.2", "date": "2020-01-01", "substantive": True},
-                        {"identifier": "438.2", "date": "2021-01-01", "substantive": False},
-                    ]
-                }
-            ),
-            encoding="utf-8",
-        )
+        (self.data_dir / "ecfr" / "versions.json").write_text(json.dumps(_VERSIONS), encoding="utf-8")
         (self.data_dir / "fr" / "documents.json").write_text(json.dumps(_DOCUMENTS), encoding="utf-8")
         (self.data_dir / "fr" / "2020-0001.xml").write_text("<ROOT/>", encoding="utf-8")
 

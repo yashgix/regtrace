@@ -1,1 +1,29 @@
-{"sections_438_68":{"section":"438.68","date":"2026-07-31","in_force":"2026-07-31","heading":"§ 438.68 Network adequacy standards.","paragraphs":[{"label":"(a)","text":"(a) General requirement. For each contract with a managed care organization, the State must establish network adequacy standards that meet the requirements of this section."}]},"verify_valid":{"status":"valid","found_label":null,"found_dates":[]},"verify_wrong_paragraph":{"status":"wrong_paragraph","found_label":"(a)","found_dates":[]},"verify_too_short":{"status":"too_short","found_label":null,"found_dates":[]}}
+{
+  "sections_438_68": {
+    "section": "438.68",
+    "date": "2026-07-31",
+    "in_force": "2026-07-31",
+    "heading": "\u00a7 438.68 Network adequacy standards.",
+    "paragraphs": [
+      {
+        "label": "(a)",
+        "text": "(a) General requirement. For each contract with a managed care organization, the State must establish network adequacy standards that meet the requirements of this section."
+      }
+    ]
+  },
+  "verify_valid": {
+    "status": "valid",
+    "found_label": null,
+    "found_dates": []
+  },
+  "verify_wrong_paragraph": {
+    "status": "wrong_paragraph",
+    "found_label": "(a)",
+    "found_dates": []
+  },
+  "verify_too_short": {
+    "status": "too_short",
+    "found_label": null,
+    "found_dates": []
+  }
+}

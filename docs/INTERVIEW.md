@@ -15,14 +15,15 @@ and the system is honest about what it cannot explain.
 ## Why this problem
 
 Regulatory change management is an evidence problem. A health plan has to show why a policy changed, when
-the underlying rule took effect, and which citation supports the conclusion. That is hard to do with
-PDFs and spreadsheets because the text is not point-in-time and the chain of evidence is not executable.
+the underlying rule took effect, and which citation supports the conclusion. That is hard to do with PDFs
+and spreadsheets because the text is not point-in-time and the chain of evidence is not executable.
 
-This project is the public-law checking layer for that work. Readily's public description says it monitors
-Federal Register rules and uses AI to identify affected policies and cite supporting evidence. regtrace is
-not that product and makes no claim about it. It demonstrates the ground truth such a product needs:
-labeled text, explicit matching rules, an unexplained list, and a citation verifier that rejects a quote
-when it is not actually in force.
+This project is the public-law checking layer for that work. Readily's public description says it is an
+AI-native compliance intelligence platform that connects regulatory requirements with policies, assigned
+actions, audits and supporting evidence (source: <https://www.readily.ai/>). regtrace is not that product
+and makes no claim about it. It demonstrates the ground truth such a product needs: labeled text, explicit
+matching rules, an unexplained list, and a citation verifier that rejects a quote when it is not actually
+in force.
 
 ## What was hard
 
@@ -32,8 +33,10 @@ The eCFR XML gives paragraphs and italics, but not semantic labels. `(i)` may be
 numeral. The labeler has to reconstruct the printed hierarchy from marker order, nesting depth, italics,
 and the sequence of symbols. The tricky cases are chained markers like `(d)(1)`, inline splits after an
 italic heading, definitions with their own sub-list, and headed continuations that should continue a level
-instead of opening a deeper one. I made the parser conservative: when a marker does not fit the stack, the
-paragraph becomes `~n` rather than a guessed label.
+instead of opening a deeper one. Italics turn out to be a narrow signal: levels 0-3 need a non-italic
+symbol, levels 4-5 accept either, and headed detection uses a following italic run. I made the parser
+conservative: when a marker does not fit the stack, the paragraph becomes `~n` rather than a guessed
+label.
 
 ### Point-in-time matching is not exact
 
@@ -54,7 +57,8 @@ separately.
 
 1. Run `make test` and `python experiment.py --out results/metrics.json` to show the snapshot and the
    deterministic metrics.
-2. Run `python demo.py` to render the unexplained changes and discrepancies from `reconcile()`.
+2. Run `python demo.py --readme README.md` and show the unexplained changes and discrepancies tables that
+   were rendered from `reconcile()`.
 3. Open `uvicorn regtrace.api:app`, fetch `/sections/438.68?date=2026-07-31`, and show the labeled
    paragraphs.
 4. Post a valid quote to `/verify`, then change the last word and show that it no longer verifies.
@@ -68,6 +72,8 @@ separately.
 - The parser is conservative about labels. A visible `~n` is better than a wrong citation.
 - The API is read-only and JSON-only. There is no mutation surface to secure yet.
 - The metrics JSON has no timestamps and sorted keys so two runs can be compared byte for byte.
+- The README's evidence block is generated, not typed: prose can be edited freely without risking a stale
+  or invented number.
 
 ## What is next
 

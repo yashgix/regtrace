@@ -30,8 +30,8 @@ runs collapse to one space and the result is stripped. XML entities are already 
 `ElementTree`. Markers stay in the text; a paragraph labeled `(i)` still begins `(i) ...`.
 
 A single `P` can hold several logical paragraphs. After an italic run ends, the parser skips spaces,
-optionally skips one `-` or em dash, and checks for a valid marker. If one follows, the paragraph is cut
-there and the dash is dropped. This handles both `</I>-(1)` and `</I> (1)` forms.
+optionally skips one `-` or em dash, skips spaces again, and checks for a valid marker. If one follows, the
+paragraph is cut there and the dash is dropped. This handles both `</I>-(1)` and `</I> - (1)` forms.
 
 ### Marker grammar
 
@@ -42,9 +42,11 @@ A marker is `(symbol)` where the symbol is one of:
 - one uppercase letter;
 - one to three digits.
 
-Anything else, such as `(ILOS)`, is ordinary text. The marker may be plain, `(<I>x</I>)`, or `<I>(x)</I>`.
-The latter two are treated as italic markers. Levels 0 through 3 require a non-italic symbol; levels 4 and
-5 accept either.
+Anything else, such as `(ILOS)`, is ordinary text. The marker may be plain, `(<I>x</I>)`, or `<I>(x)</I>`;
+the latter two carry an italic id for the symbol. Levels 0-3 require a non-italic symbol; levels 4-5 accept
+an italic one. Apart from that constraint, italics do not choose the level: the main stack places a symbol
+by its alphabet and its position in the stack. Italics also feed headed detection, and the definition stack
+accepts non-italic markers only.
 
 ### Levels and alphabets
 
@@ -74,9 +76,10 @@ entries below the chosen level and replaces the rest with the new entry.
 ### Definitions
 
 A piece with no placed marker can open a definition when it starts with an italic element whose text does
-not start with `(` and that element has no child elements. The term is the normalized italic text with a
-trailing `.` or `,` removed. Its label is the current main path plus `def:` plus the term, for example
-`def:Abuse` or `(a)def:Academic medical center`.
+not start with `(` and that element has no child elements. The term is the whole normalized italic text
+with a trailing `.` or `,` removed, parentheses and all; its label is the current main path plus `def:`
+plus the term, for example `def:Abuse`, `def:Health insuring organization (HIO)` or
+`(a)def:Academic medical center`.
 
 Inside a definition, markers are placed on a separate stack using digits, lowercase roman, and uppercase
 (all non-italic). The first child may open any of those levels, which is why
@@ -95,8 +98,9 @@ silently wrong citation label.
 `diff(old, new)` visits the union of section ids in `section_key` order. A section only in new yields one
 `section_added`; only in old yields `section_removed`. Otherwise a changed heading yields
 `heading_revised`, then new labels appear in new order as `added` or `revised`, then labels only in old
-appear in old order as `removed`. Texts are carried for revision, addition and removal so a reviewer can
-see exactly what changed.
+appear in old order as `removed`. Duplicate labels are paired in order of appearance, so a repeated `(a)`
+does not swallow its twin. Texts are carried for revision, addition and removal so a reviewer can see
+exactly what changed.
 
 ## Amendatory instructions
 
@@ -173,6 +177,18 @@ document XML. It usually has high recall and low precision: preambles cite many 
 not amend. The parser uses only amendatory text and `SECTNO` headings, so it is quieter but can miss a
 section mentioned only in prose. Reporting both is the point; a single accuracy number would hide the
 trade-off.
+
+## Rendering the evidence
+
+`demo.py` is the only place that turns numbers into prose tables. `render(metrics)` returns the metrics
+table, the unexplained changes table, the discrepancies table and a walk-through that also perturbs one
+quote to show the citation verifier rejecting it. Cells are whitespace-normalized and pipe-escaped so a
+heading cannot break a table; an empty list renders as `_None._` rather than a header with no body.
+
+`render_readme(metrics, README.md)` splices that block into the README between
+`<!-- regtrace:evidence:start -->` and `<!-- regtrace:evidence:end -->` and leaves the prose untouched. The
+README is therefore partly hand-written narrative and partly generated evidence, with a hard boundary
+between the two.
 
 ## Determinism and caching
 

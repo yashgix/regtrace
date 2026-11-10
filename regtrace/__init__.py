@@ -1,5 +1,9 @@
 """Trace Federal Register changes to 42 CFR Part 438 against the point-in-time eCFR."""
 
+from __future__ import annotations
+
+from .model import Change, Document, Instruction, Paragraph, Part, Row, Section, Verdict, Version
+
 __all__ = [
     "Change",
     "Document",

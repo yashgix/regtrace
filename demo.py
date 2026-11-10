@@ -1,4 +1,4 @@
-"""Render the README evidence tables and a short walk-through of the library."""
+"""Render the evidence tables and a short walk-through of the library."""
 
 from __future__ import annotations
 
@@ -13,6 +13,10 @@ from regtrace.diff import diff
 from regtrace.model import Paragraph, Part, Row, Section
 from regtrace.reconcile import reconcile
 
+EVIDENCE_START = "<!-- regtrace:evidence:start -->"
+EVIDENCE_END = "<!-- regtrace:evidence:end -->"
+METRICS_PATH = Path("results/metrics.json")
+
 
 def _normalize(text: str) -> str:
     return " ".join(text.split())
@@ -20,12 +24,12 @@ def _normalize(text: str) -> str:
 
 def _short(text: str, limit: int = 90) -> str:
     text = _normalize(text)
-    return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
+    return text if len(text) <= limit else text[: limit - 1].rstrip() + "\u2026"
 
 
 def _cell(value: object) -> str:
     text = "" if value is None else str(value)
-    return text.replace("|", "\\|").replace("\n", " ")
+    return _normalize(text).replace("|", "\\|")
 
 
 def _table(headers: tuple[str, ...], rows: list[tuple[object, ...]]) -> str:
@@ -37,12 +41,12 @@ def _table(headers: tuple[str, ...], rows: list[tuple[object, ...]]) -> str:
 
 def _metrics_table(metrics: dict[str, int | float]) -> str:
     rows = [(key, metrics[key]) for key in sorted(metrics)]
-    return "## Metrics\n\n" + _table(("metric", "value"), rows)
+    return "### Metrics\n\n" + _table(("metric", "value"), rows)
 
 
 def _unexplained_table(unexplained: list[tuple[str, str]]) -> str:
     if not unexplained:
-        return "## Unexplained changes\n\n_None._"
+        return "### Unexplained changes\n\n_None._"
     parts = {day: load_part(day) for _, day in unexplained}
     rows = []
     for section_id, day in unexplained:
@@ -50,12 +54,10 @@ def _unexplained_table(unexplained: list[tuple[str, str]]) -> str:
         heading = section.heading if section is not None else ""
         next_check = (
             f"Check Federal Register documents around {day} "
-            f"for an untagged § {section_id} amendment."
+            f"for an untagged \u00a7 {section_id} amendment."
         )
         rows.append((section_id, day, _short(heading, 80), next_check))
-    return "## Unexplained changes\n\n" + _table(
-        ("section", "date", "heading", "next check"), rows
-    )
+    return "### Unexplained changes\n\n" + _table(("section", "date", "heading", "next check"), rows)
 
 
 def _discrepancy_table(rows: list[Row]) -> str:
@@ -66,12 +68,10 @@ def _discrepancy_table(rows: list[Row]) -> str:
             continue
         document = by_number[row.document]
         expected = document.effective_on or document.publication_date
-        discrepancies.append(
-            (row.document, row.section, expected, row.date or "—", row.status)
-        )
+        discrepancies.append((row.document, row.section, expected, row.date or "\u2014", row.status))
     if not discrepancies:
-        return "## Discrepancies\n\n_None._"
-    return "## Discrepancies\n\n" + _table(
+        return "### Discrepancies\n\n_None._"
+    return "### Discrepancies\n\n" + _table(
         ("document", "section", "expected", "eCFR date", "status"), discrepancies
     )
 
@@ -89,9 +89,11 @@ def _walkthrough() -> str:
     all_dates = dates()
     latest = all_dates[-1]
     part = load_part(latest)
+    if not part.sections:
+        return "### Walk-through\n\n_The latest snapshot has no sections._"
     section = part.sections.get("438.68") or next(iter(part.sections.values()))
     lines = [
-        "## Walk-through",
+        "### Walk-through",
         "",
         f"Latest eCFR snapshot: `{latest}` with {len(part.sections)} sections.",
         "",
@@ -120,15 +122,25 @@ def _walkthrough() -> str:
 
 
 def render(metrics: dict[str, int | float]) -> str:
+    """Return the evidence block: metrics, unexplained changes, discrepancies, walk-through."""
     rows, unexplained = reconcile()
     blocks = [
-        "# regtrace evidence",
         _metrics_table(metrics),
         _unexplained_table(unexplained),
         _discrepancy_table(rows),
         _walkthrough(),
     ]
     return "\n\n".join(blocks) + "\n"
+
+
+def render_readme(metrics: dict[str, int | float], readme: Path) -> str:
+    """Return the README with its generated evidence block refreshed."""
+    text = readme.read_text(encoding="utf-8")
+    head, marker, rest = text.partition(EVIDENCE_START)
+    if not marker:
+        raise SystemExit(f"{readme} has no {EVIDENCE_START} ... {EVIDENCE_END} block")
+    _, _, tail = rest.partition(EVIDENCE_END)
+    return f"{head}{EVIDENCE_START}\n\n{render(metrics).rstrip()}\n\n{EVIDENCE_END}{tail}"
 
 
 def _load_metrics(path: Path) -> dict[str, int | float]:
@@ -145,11 +157,18 @@ def _load_metrics(path: Path) -> dict[str, int | float]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--metrics", type=Path, default=Path("results/metrics.json"))
-    parser.add_argument("--out", type=Path, help="write the rendered markdown here instead of stdout")
+    parser.add_argument("--metrics", type=Path, default=METRICS_PATH)
+    parser.add_argument("--out", type=Path, help="write the rendered evidence here instead of stdout")
+    parser.add_argument("--readme", type=Path, help="refresh the generated block inside this README")
     args = parser.parse_args()
-    text = render(_load_metrics(args.metrics))
-    if args.out:
+
+    metrics = _load_metrics(args.metrics)
+    if args.readme is not None:
+        args.readme.write_text(render_readme(metrics, args.readme), encoding="utf-8")
+        return
+
+    text = render(metrics)
+    if args.out is not None:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(text, encoding="utf-8")
     else:

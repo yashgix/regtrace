@@ -1,4 +1,4 @@
-'''Assign full path labels to the paragraphs of one eCFR section element.'''
+"""Assign full path labels to the paragraphs of one eCFR section element."""
 
 from __future__ import annotations
 
@@ -30,16 +30,16 @@ class _Definition:
     stack: list[_Entry]
 
 
-_SYMBOL = re.compile(r'(?:[a-z]{1,2}|[ivxl]{1,6}|[A-Z]|[0-9]{1,3})')
+_SYMBOL = re.compile(r"(?:[a-z]{1,2}|[ivxl]{1,6}|[A-Z]|[0-9]{1,3})")
 
 
 def _roman(number: int) -> str:
-    values = ((10, 'x'), (9, 'ix'), (5, 'v'), (4, 'iv'), (1, 'i'))
+    values = ((10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i"))
     out = []
     for value, symbol in values:
         count, number = divmod(number, value)
         out.append(symbol * count)
-    return ''.join(out)
+    return "".join(out)
 
 
 _ROMAN = tuple(_roman(number) for number in range(1, 26))
@@ -51,10 +51,13 @@ _ALPHABETS: dict[int, tuple[str, ...]] = {
     4: tuple(str(number) for number in range(1, 101)),
     5: _ROMAN,
 }
+_MAIN_LEVELS = (0, 1, 2, 3, 4, 5)
+_ITALIC_MAIN_LEVELS = (4, 5)
+_DEFINITION_LEVELS = (1, 2, 3)
 
 
 def _local(tag: str) -> str:
-    return tag.rsplit('}', 1)[-1]
+    return tag.rsplit("}", 1)[-1]
 
 
 def _valid_symbol(symbol: str) -> bool:
@@ -62,7 +65,7 @@ def _valid_symbol(symbol: str) -> bool:
 
 
 def _flatten(element) -> tuple[list[str], list[int | None], dict[int, bool]]:
-    '''Flatten an element to characters and the innermost italic element id for each.'''
+    """Flatten an element to characters and the innermost italic element id for each."""
     chars: list[str] = []
     ids: list[int | None] = []
     has_child: dict[int, bool] = {}
@@ -76,7 +79,7 @@ def _flatten(element) -> tuple[list[str], list[int | None], dict[int, bool]]:
     def walk(node, inherited_id: int | None) -> None:
         nonlocal next_id
         italic_id = inherited_id
-        if _local(node.tag) == 'I':
+        if _local(node.tag) == "I":
             italic_id = next_id
             next_id += 1
             has_child[italic_id] = bool(len(node))
@@ -90,18 +93,18 @@ def _flatten(element) -> tuple[list[str], list[int | None], dict[int, bool]]:
 
 
 def _marker_syntax(chars: list[str], pos: int) -> bool:
-    if pos >= len(chars) or chars[pos] != '(':
+    if pos >= len(chars) or chars[pos] != "(":
         return False
     close = pos + 1
-    while close < len(chars) and chars[close] != ')':
+    while close < len(chars) and chars[close] != ")":
         close += 1
     if close >= len(chars):
         return False
-    return _valid_symbol(''.join(chars[pos + 1 : close]))
+    return _valid_symbol("".join(chars[pos + 1 : close]))
 
 
 def _split_inline(chars: list[str], ids: list[int | None]) -> list[tuple[list[str], list[int | None]]]:
-    '''Split after an italic run when an optional dash and a marker follow it.'''
+    """Split after an italic run when optional spaces, a dash, spaces, and a marker follow."""
     cuts: list[tuple[int, int]] = []
     for index in range(1, len(chars)):
         if ids[index - 1] is None or ids[index] == ids[index - 1]:
@@ -109,8 +112,10 @@ def _split_inline(chars: list[str], ids: list[int | None]) -> list[tuple[list[st
         marker_start = index
         while marker_start < len(chars) and chars[marker_start].isspace():
             marker_start += 1
-        if marker_start < len(chars) and chars[marker_start] in '-\u2014':
+        if marker_start < len(chars) and chars[marker_start] in "-—":
             marker_start += 1
+            while marker_start < len(chars) and chars[marker_start].isspace():
+                marker_start += 1
         if _marker_syntax(chars, marker_start):
             cuts.append((index, marker_start))
 
@@ -119,8 +124,7 @@ def _split_inline(chars: list[str], ids: list[int | None]) -> list[tuple[list[st
     for end, marker_start in cuts:
         if end <= start:
             continue
-        if end > start:
-            pieces.append((chars[start:end], ids[start:end]))
+        pieces.append((chars[start:end], ids[start:end]))
         start = marker_start
     if start < len(chars):
         pieces.append((chars[start:], ids[start:]))
@@ -131,23 +135,34 @@ def _normalize(chars: list[str], ids: list[int | None]) -> tuple[str, list[int |
     out: list[str] = []
     out_ids: list[int | None] = []
     pending_space = False
+    pending_id: int | None = None
     for char, italic_id in zip(chars, ids):
         if char.isspace():
-            pending_space = True
+            if not pending_space:
+                pending_space = True
+                pending_id = italic_id
+            elif pending_id != italic_id:
+                pending_id = None
             continue
         if pending_space and out:
-            out.append(' ')
-            out_ids.append(None)
+            space_id = (
+                pending_id
+                if pending_id is not None and out_ids[-1] == pending_id and italic_id == pending_id
+                else None
+            )
+            out.append(" ")
+            out_ids.append(space_id)
         out.append(char)
         out_ids.append(italic_id)
         pending_space = False
-    return ''.join(out), out_ids
+        pending_id = None
+    return "".join(out), out_ids
 
 
 def _parse_marker(text: str, ids: list[int | None], pos: int) -> _Marker | None:
-    if pos >= len(text) or text[pos] != '(':
+    if pos >= len(text) or text[pos] != "(":
         return None
-    close = text.find(')', pos + 1)
+    close = text.find(")", pos + 1)
     if close < 0:
         return None
     symbol = text[pos + 1 : close]
@@ -172,13 +187,13 @@ def _leading_markers(text: str, ids: list[int | None]) -> tuple[list[_Marker], i
 def _headed(text: str, ids: list[int | None], pos: int) -> bool:
     while pos < len(text) and text[pos].isspace():
         pos += 1
-    if pos >= len(text) or ids[pos] is None or text[pos] == '(':
+    if pos >= len(text) or ids[pos] is None or text[pos] == "(":
         return False
     return pos == 0 or ids[pos - 1] != ids[pos]
 
 
 def _path(stack: list[_Entry]) -> str:
-    return ''.join(f'({entry.symbol})' for entry in stack)
+    return "".join(f"({entry.symbol})" for entry in stack)
 
 
 def _next_symbol(level: int, symbol: str) -> str | None:
@@ -223,7 +238,8 @@ def _place(stack: list[_Entry], marker: _Marker, headed: bool, levels: tuple[int
 
 
 def _place_main(stack: list[_Entry], marker: _Marker, headed: bool) -> bool:
-    levels = (4, 5) if marker.italic else (0, 1, 2, 3, 4, 5)
+    # Levels 0-3 need a non-italic symbol; levels 4-5 accept either form.
+    levels = _MAIN_LEVELS if not marker.italic else _ITALIC_MAIN_LEVELS
     return _place(stack, marker, headed, levels)
 
 
@@ -246,11 +262,11 @@ def _place_definition(stack: list[_Entry], marker: _Marker, headed: bool) -> boo
             return False
         stack.append(_Entry(level, marker.symbol, headed))
         return True
-    return _place(stack, marker, headed, (1, 2, 3))
+    return _place(stack, marker, headed, _DEFINITION_LEVELS)
 
 
 def _definition_term(text: str, ids: list[int | None], has_child: dict[int, bool]) -> str | None:
-    if not text or text[0] == '(' or ids[0] is None:
+    if not text or text[0] == "(" or ids[0] is None:
         return None
     italic_id = ids[0]
     if has_child.get(italic_id, True):
@@ -258,16 +274,16 @@ def _definition_term(text: str, ids: list[int | None], has_child: dict[int, bool
     end = 1
     while end < len(text) and ids[end] == italic_id:
         end += 1
-    term = text[:end].strip().rstrip('.,').strip()
+    term = text[:end].strip().rstrip(".,").strip()
     return term or None
 
 
 def label_paragraphs(div8) -> tuple[Paragraph, ...]:
-    '''Return the section's P and FP paragraphs with their full CFR-style labels.'''
+    """Return the section's P and FP paragraphs with their full CFR-style labels."""
     paragraphs: list[Paragraph] = []
     main_stack: list[_Entry] = []
     definition: _Definition | None = None
-    last_label = ''
+    last_label = ""
     unlabeled = 0
     seen: set[str] = set()
 
@@ -275,7 +291,7 @@ def label_paragraphs(div8) -> tuple[Paragraph, ...]:
         nonlocal unlabeled
         while True:
             unlabeled += 1
-            label = f'{last_label}~{unlabeled}'
+            label = f"{last_label}~{unlabeled}"
             if label not in seen:
                 break
         seen.add(label)
@@ -292,7 +308,7 @@ def label_paragraphs(div8) -> tuple[Paragraph, ...]:
         paragraphs.append(Paragraph(label, text))
 
     for element in div8:
-        if _local(element.tag) not in {'P', 'FP'}:
+        if _local(element.tag) not in {"P", "FP"}:
             continue
         chars, ids, has_child = _flatten(element)
         for raw_chars, raw_ids in _split_inline(chars, ids):
@@ -326,7 +342,7 @@ def label_paragraphs(div8) -> tuple[Paragraph, ...]:
 
             term = _definition_term(text, text_ids, has_child)
             if term is not None:
-                prefix = _path(main_stack) + 'def:' + term
+                prefix = _path(main_stack) + "def:" + term
                 definition = _Definition(prefix, [])
                 emit_labeled(prefix, text)
             else:
