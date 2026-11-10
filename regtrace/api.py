@@ -1,4 +1,4 @@
-'''FastAPI surface over the regtrace library.'''
+"""FastAPI surface over the regtrace library."""
 
 from __future__ import annotations
 
@@ -30,16 +30,16 @@ def _parse_date(value: str) -> str:
     try:
         parsed = Date.fromisoformat(value)
     except ValueError as exc:
-        raise HTTPException(status_code=400, detail=f'invalid date: {value!r}') from exc
+        raise HTTPException(status_code=400, detail=f"invalid date: {value!r}") from exc
     if parsed.isoformat() != value:
-        raise HTTPException(status_code=400, detail=f'invalid date: {value!r}')
+        raise HTTPException(status_code=400, detail=f"invalid date: {value!r}")
     return value
 
 
 def _require_data_date(value: str, data_dir: Path) -> str:
     _parse_date(value)
     if value not in dates(data_dir):
-        raise HTTPException(status_code=400, detail=f'{value} is not an eCFR snapshot date')
+        raise HTTPException(status_code=400, detail=f"{value} is not an eCFR snapshot date")
     return value
 
 
@@ -58,120 +58,115 @@ def _status_counts(data_dir: Path) -> dict[str, dict[str, int]]:
 
 def _document_payload(document: Document, statuses: dict[str, int]) -> dict:
     return {
-        'number': document.number,
-        'type': document.type,
-        'action': document.action,
-        'title': document.title,
-        'publication_date': document.publication_date,
-        'effective_on': document.effective_on,
-        'has_text': document.has_text,
-        'statuses': statuses,
+        "number": document.number,
+        "type": document.type,
+        "action": document.action,
+        "title": document.title,
+        "publication_date": document.publication_date,
+        "effective_on": document.effective_on,
+        "has_text": document.has_text,
+        "statuses": statuses,
     }
 
 
 def create_app(data_dir: Path = DATA_DIR) -> FastAPI:
     data_path = Path(data_dir)
-    app = FastAPI(title='regtrace', version='0.1.0')
+    app = FastAPI(title="regtrace", version="0.1.0")
 
-    @app.get('/health')
+    @app.get("/health")
     def health() -> dict[str, int]:
         docs = documents(data_path)
         return {
-            'dates': len(dates(data_path)),
-            'documents': len(docs),
-            'rules': sum(1 for document in docs if document.type == 'Rule'),
+            "dates": len(dates(data_path)),
+            "documents": len(docs),
+            "rules": sum(1 for document in docs if document.type == "Rule"),
         }
 
-    @app.get('/sections/{section}')
+    @app.get("/sections/{section}")
     def section(section: str, date: str | None = None) -> dict:
         all_dates = dates(data_path)
         if not all_dates:
-            raise HTTPException(status_code=404, detail='no eCFR snapshots')
+            raise HTTPException(status_code=404, detail="no eCFR snapshots")
         requested = all_dates[-1] if date is None else _parse_date(date)
         effective = in_force(requested, data_path)
         if effective is None:
-            raise HTTPException(status_code=404, detail=f'no eCFR data on or before {requested}')
+            raise HTTPException(status_code=404, detail=f"no eCFR data on or before {requested}")
         part = load_part(effective, data_path)
         found = part.sections.get(section)
         if found is None:
-            raise HTTPException(status_code=404, detail=f'section {section} not found at {effective}')
+            raise HTTPException(status_code=404, detail=f"section {section} not found at {effective}")
+        paragraphs = [{"label": paragraph.label, "text": paragraph.text} for paragraph in found.paragraphs]
         return {
-            'section': section,
-            'date': requested,
-            'in_force': effective,
-            'heading': found.heading,
-            'paragraphs': [
-                {'label': paragraph.label, 'text': paragraph.text}
-                for paragraph in found.paragraphs
-            ],
+            "section": section,
+            "date": requested,
+            "in_force": effective,
+            "heading": found.heading,
+            "paragraphs": paragraphs,
         }
 
-    @app.get('/changes')
+    @app.get("/changes")
     def changes(
-        from_: Annotated[str | None, Query(alias='from')] = None,
+        from_: Annotated[str | None, Query(alias="from")] = None,
         to: Annotated[str | None, Query()] = None,
     ) -> dict:
         if from_ is None or to is None:
-            raise HTTPException(status_code=400, detail='from and to are required data dates')
+            raise HTTPException(status_code=400, detail="from and to are required data dates")
         _require_data_date(from_, data_path)
         _require_data_date(to, data_path)
         records = diff(load_part(from_, data_path), load_part(to, data_path))
         return {
-            'from': from_,
-            'to': to,
-            'changes': [
+            "from": from_,
+            "to": to,
+            "changes": [
                 {
-                    'section': change.section,
-                    'label': change.label,
-                    'kind': change.kind,
-                    'old_text': change.old_text,
-                    'new_text': change.new_text,
+                    "section": change.section,
+                    "label": change.label,
+                    "kind": change.kind,
+                    "old_text": change.old_text,
+                    "new_text": change.new_text,
                 }
                 for change in records
             ],
         }
 
-    @app.get('/documents')
+    @app.get("/documents")
     def list_documents() -> list[dict]:
         counts = _status_counts(data_path)
-        return [
-            _document_payload(document, counts.get(document.number, {}))
-            for document in documents(data_path)
-        ]
+        return [_document_payload(document, counts.get(document.number, {})) for document in documents(data_path)]
 
-    @app.get('/documents/{number}')
+    @app.get("/documents/{number}")
     def document_detail(number: str) -> dict:
         document = next((item for item in documents(data_path) if item.number == number), None)
         if document is None:
-            raise HTTPException(status_code=404, detail=f'document {number} not found')
+            raise HTTPException(status_code=404, detail=f"document {number} not found")
         counts = _status_counts(data_path)
         rows, _ = _reconciliation(data_path)
         return {
-            'document': _document_payload(document, counts.get(number, {})),
-            'instructions': [
-                {'number': item.number, 'text': item.text, 'sections': list(item.sections)}
+            "document": _document_payload(document, counts.get(number, {})),
+            "instructions": [
+                {"number": item.number, "text": item.text, "sections": list(item.sections)}
                 for item in instructions(number, data_path)
             ],
-            'rows': [
-                {'section': row.section, 'status': row.status, 'date': row.date}
+            "rows": [
+                {"section": row.section, "status": row.status, "date": row.date}
                 for row in rows
                 if row.document == number
             ],
         }
 
-    @app.get('/unexplained')
+    @app.get("/unexplained")
     def list_unexplained() -> list[dict]:
         _, items = _reconciliation(data_path)
-        return [{'section': section, 'date': day} for section, day in items]
+        return [{"section": section, "date": day} for section, day in items]
 
-    @app.post('/verify')
+    @app.post("/verify")
     def verify(request: VerifyRequest) -> dict:
         _parse_date(request.date)
         verdict = verify_citation(request.section, request.label, request.date, request.quote, data_path)
         return {
-            'status': verdict.status,
-            'found_label': verdict.found_label,
-            'found_dates': list(verdict.found_dates),
+            "status": verdict.status,
+            "found_label": verdict.found_label,
+            "found_dates": list(verdict.found_dates),
         }
 
     return app

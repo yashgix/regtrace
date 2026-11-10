@@ -35,30 +35,30 @@ def _wrap(*body: str) -> str:
 class InstructionTests(unittest.TestCase):
     def test_numbered_instructions_and_continuations(self) -> None:
         xml = _wrap(
-            "<AMDPAR>1. Amend § 438.2 by revising paragraph (a).</AMDPAR>",
+            "<AMDPAR>1. Amend \u00a7 438.2 by revising paragraph (a).</AMDPAR>",
             "<AMDPAR>a. Adding introductory text.</AMDPAR>",
-            "<AMDPAR>2. Amend § 438.10 by removing paragraph (b).</AMDPAR>",
+            "<AMDPAR>2. Amend \u00a7 438.10 by removing paragraph (b).</AMDPAR>",
         )
         found = _instructions(xml)
         self.assertEqual([item.number for item in found], [1, 2])
         self.assertEqual(found[0].document, "2024-0001")
         self.assertEqual(
             found[0].text,
-            "1. Amend § 438.2 by revising paragraph (a). a. Adding introductory text.",
+            "1. Amend \u00a7 438.2 by revising paragraph (a). a. Adding introductory text.",
         )
         self.assertEqual(found[0].sections, ("438.2",))
         self.assertEqual(found[1].sections, ("438.10",))
 
     def test_unnumbered_first_instruction_is_zero(self) -> None:
-        found = _instructions(_wrap("<AMDPAR>a. Revise § 438.6.</AMDPAR>"))
+        found = _instructions(_wrap("<AMDPAR>a. Revise \u00a7 438.6.</AMDPAR>"))
         self.assertEqual([item.number for item in found], [0])
         self.assertEqual(found[0].sections, ("438.6",))
 
     def test_multi_digit_instruction_numbers(self) -> None:
         found = _instructions(
             _wrap(
-                "<AMDPAR>9. Amend § 438.2.</AMDPAR>",
-                "<AMDPAR>10. Amend § 438.4.</AMDPAR>",
+                "<AMDPAR>9. Amend \u00a7 438.2.</AMDPAR>",
+                "<AMDPAR>10. Amend \u00a7 438.4.</AMDPAR>",
             )
         )
         self.assertEqual([item.number for item in found], [9, 10])
@@ -66,8 +66,8 @@ class InstructionTests(unittest.TestCase):
 
     def test_regtext_outside_part_438_is_ignored(self) -> None:
         xml = (
-            '<ROOT><REGTEXT TITLE="42" PART="447"><AMDPAR>1. Revise § 438.2.</AMDPAR></REGTEXT>'
-            '<REGTEXT TITLE="42" PART="438"><AMDPAR>2. Revise § 438.4.</AMDPAR></REGTEXT></ROOT>'
+            '<ROOT><REGTEXT TITLE="42" PART="447"><AMDPAR>1. Revise \u00a7 438.2.</AMDPAR></REGTEXT>'
+            '<REGTEXT TITLE="42" PART="438"><AMDPAR>2. Revise \u00a7 438.4.</AMDPAR></REGTEXT></ROOT>'
         )
         found = _instructions(xml)
         self.assertEqual([item.number for item in found], [2])
@@ -75,7 +75,7 @@ class InstructionTests(unittest.TestCase):
 
     def test_nested_amdpar_inside_a_division_is_found(self) -> None:
         xml = (
-            '<ROOT><REGTEXT TITLE="42" PART="438"><DIV8><AMDPAR>1. Amend § 438.2.</AMDPAR></DIV8>'
+            '<ROOT><REGTEXT TITLE="42" PART="438"><DIV8><AMDPAR>1. Amend \u00a7 438.2.</AMDPAR></DIV8>'
             "</REGTEXT></ROOT>"
         )
         found = _instructions(xml)
@@ -85,10 +85,10 @@ class InstructionTests(unittest.TestCase):
     def test_sectno_headings_attach_to_the_current_instruction(self) -> None:
         xml = _wrap(
             "<AMDPAR>3. Revise the following sections:</AMDPAR>",
-            "<SECTNO>§ 438.68</SECTNO>",
-            "<SECTNO>§ 438.70</SECTNO>",
-            "<AMDPAR>4. Amend § 438.2.</AMDPAR>",
-            "<SECTNO>§ 438.2</SECTNO>",
+            "<SECTNO>\u00a7 438.68</SECTNO>",
+            "<SECTNO>\u00a7 438.70</SECTNO>",
+            "<AMDPAR>4. Amend \u00a7 438.2.</AMDPAR>",
+            "<SECTNO>\u00a7 438.2</SECTNO>",
         )
         found = _instructions(xml)
         self.assertEqual([item.number for item in found], [3, 4])
@@ -96,15 +96,15 @@ class InstructionTests(unittest.TestCase):
         self.assertEqual(found[1].sections, ("438.2",))
 
     def test_ranges_expand_against_known_versions(self) -> None:
-        found = _instructions(_wrap("<AMDPAR>5. Amend §§ 438.2 through 438.10.</AMDPAR>"))
+        found = _instructions(_wrap("<AMDPAR>5. Amend \u00a7\u00a7 438.2 through 438.10.</AMDPAR>"))
         self.assertEqual(found[0].sections, ("438.2", "438.3", "438.4", "438.6", "438.10"))
 
     def test_sections_are_deduplicated_and_ordered(self) -> None:
-        found = _instructions(_wrap("<AMDPAR>6. Amend § 438.10 and §438.2 and § 438.10 again.</AMDPAR>"))
+        found = _instructions(_wrap("<AMDPAR>6. Amend \u00a7 438.10 and \u00a7438.2 and \u00a7 438.10 again.</AMDPAR>"))
         self.assertEqual(found[0].sections, ("438.2", "438.10"))
 
     def test_letter_suffix_sections_are_kept(self) -> None:
-        found = _instructions(_wrap("<AMDPAR>7. Amend § 438.68a and § 438.2.</AMDPAR>"))
+        found = _instructions(_wrap("<AMDPAR>7. Amend \u00a7 438.68a and \u00a7 438.2.</AMDPAR>"))
         self.assertEqual(found[0].sections, ("438.2", "438.68a"))
 
     def test_document_without_text_has_no_instructions(self) -> None:

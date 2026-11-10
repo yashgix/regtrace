@@ -55,6 +55,30 @@ class LabelTests(unittest.TestCase):
         self.assertEqual(len(labels), 4)
         self.assertEqual(labels[-1], ("(d)(1)", "(d)(1) Chained."))
 
+    def test_repeated_printed_label_falls_back_to_unique_unlabeled(self) -> None:
+        labels = _labels(
+            """
+            <DIV8>
+              <P>(a) First.</P>
+              <P>(a) Second.</P>
+            </DIV8>
+            """
+        )
+        self.assertEqual(
+            [label for label, _ in labels],
+            ["(a)", "(a)~1"],
+        )
+
+    def test_marker_chain_that_does_not_fit_is_unlabeled(self) -> None:
+        labels = _labels(
+            """
+            <DIV8>
+              <P>(a)(2) Not a valid chain.</P>
+            </DIV8>
+            """
+        )
+        self.assertEqual(labels, [("~1", "(a)(2) Not a valid chain.")])
+
     def test_inline_split_with_dash(self) -> None:
         labels = _labels(
             """
@@ -79,6 +103,24 @@ class LabelTests(unittest.TestCase):
             <DIV8>
               <P>(a) Intro.</P>
               <P>(b) <I>Provider-specific network adequacy standards.</I> - (1) <I>Provider types.</I> At a minimum.</P>
+            </DIV8>
+            """
+        )
+        self.assertEqual(
+            labels,
+            [
+                ("(a)", "(a) Intro."),
+                ("(b)", "(b) Provider-specific network adequacy standards."),
+                ("(b)(1)", "(1) Provider types. At a minimum."),
+            ],
+        )
+
+    def test_inline_split_with_em_dash(self) -> None:
+        labels = _labels(
+            """
+            <DIV8>
+              <P>(a) Intro.</P>
+              <P>(b) <I>Provider-specific network adequacy standards.</I>—(1) <I>Provider types.</I> At a minimum.</P>
             </DIV8>
             """
         )
@@ -313,6 +355,17 @@ class LabelTests(unittest.TestCase):
                 ("(b)", "(b) More. Text."),
             ],
         )
+
+    def test_fp_paragraphs_are_labeled(self) -> None:
+        labels = _labels(
+            """
+            <DIV8>
+              <P>(a) First.</P>
+              <FP>(b) Flush paragraph.</FP>
+            </DIV8>
+            """
+        )
+        self.assertEqual(labels, [("(a)", "(a) First."), ("(b)", "(b) Flush paragraph.")])
 
     def test_headed_continuation_beats_opening_a_deeper_level(self) -> None:
         labels = _ladder("<P>(i)<I>Ninth heading.</I> Text.</P>")

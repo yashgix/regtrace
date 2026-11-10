@@ -112,7 +112,7 @@ def _split_inline(chars: list[str], ids: list[int | None]) -> list[tuple[list[st
         marker_start = index
         while marker_start < len(chars) and chars[marker_start].isspace():
             marker_start += 1
-        if marker_start < len(chars) and chars[marker_start] in "-—":
+        if marker_start < len(chars) and chars[marker_start] in "-\u2014":
             marker_start += 1
             while marker_start < len(chars) and chars[marker_start].isspace():
                 marker_start += 1
@@ -145,13 +145,10 @@ def _normalize(chars: list[str], ids: list[int | None]) -> tuple[str, list[int |
                 pending_id = None
             continue
         if pending_space and out:
-            space_id = (
-                pending_id
-                if pending_id is not None and out_ids[-1] == pending_id and italic_id == pending_id
-                else None
-            )
+            # A collapsed space keeps an italic id only between two characters of that same run.
+            same_italic = pending_id is not None and out_ids[-1] == pending_id and italic_id == pending_id
             out.append(" ")
-            out_ids.append(space_id)
+            out_ids.append(pending_id if same_italic else None)
         out.append(char)
         out_ids.append(italic_id)
         pending_space = False
@@ -320,23 +317,18 @@ def label_paragraphs(div8) -> tuple[Paragraph, ...]:
             piece_headed = _headed(text, text_ids, marker_end) if markers else False
 
             if markers and definition is not None:
-                placed = True
-                for marker in markers:
-                    if not _place_definition(definition.stack, marker, piece_headed):
-                        placed = False
-                        definition = None
-                        break
-                if placed:
+                # The whole chain has to fit; a partly placed chain says nothing about the printed label.
+                definition_candidate = list(definition.stack)
+                if all(_place_definition(definition_candidate, marker, piece_headed) for marker in markers):
+                    definition.stack[:] = definition_candidate
                     emit_labeled(definition.prefix + _path(definition.stack), text)
                     continue
+                definition = None
 
             if markers:
-                placed_any = False
-                for marker in markers:
-                    if not _place_main(main_stack, marker, piece_headed):
-                        break
-                    placed_any = True
-                if placed_any:
+                main_candidate = list(main_stack)
+                if all(_place_main(main_candidate, marker, piece_headed) for marker in markers):
+                    main_stack[:] = main_candidate
                     emit_labeled(_path(main_stack), text)
                     continue
 

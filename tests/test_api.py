@@ -48,7 +48,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(body["section"], "438.68")
         self.assertEqual(body["date"], self.dates[-1])
         self.assertEqual(body["in_force"], self.dates[-1])
-        self.assertTrue(body["heading"].startswith("\u00a7 438.68"))
+        self.assertTrue(body["heading"].startswith("§ 438.68"))
         self.assertTrue(body["paragraphs"])
         for paragraph in body["paragraphs"]:
             self.assertEqual(set(paragraph), {"label", "text"})
@@ -229,7 +229,7 @@ class AlternateSnapshotApiTests(unittest.TestCase):
         (cls.data_dir / "ecfr" / "versions.json").write_text(json.dumps(_ALT_VERSIONS), encoding="utf-8")
         (cls.data_dir / "fr" / "documents.json").write_text(json.dumps(_ALT_DOCUMENTS), encoding="utf-8")
         (cls.data_dir / "fr" / "2020-0001.xml").write_text(
-            '<ROOT><REGTEXT TITLE="42" PART="438"><AMDPAR>1. Amend \u00a7 438.2.</AMDPAR></REGTEXT></ROOT>',
+            '<ROOT><REGTEXT TITLE="42" PART="438"><AMDPAR>1. Amend § 438.2.</AMDPAR></REGTEXT></ROOT>',
             encoding="utf-8",
         )
         cls.client = TestClient(create_app(cls.data_dir))

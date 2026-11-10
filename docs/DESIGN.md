@@ -31,7 +31,8 @@ runs collapse to one space and the result is stripped. XML entities are already 
 
 A single `P` can hold several logical paragraphs. After an italic run ends, the parser skips spaces,
 optionally skips one `-` or em dash, skips spaces again, and checks for a valid marker. If one follows, the
-paragraph is cut there and the dash is dropped. This handles both `</I>-(1)` and `</I> - (1)` forms.
+paragraph is cut there and the dash is dropped. This handles `</I>-(1)`, `</I> - (1)` and the no-dash form
+`</I> (1)`.
 
 ### Marker grammar
 
@@ -89,9 +90,9 @@ does not fit the definition stack ends the definition; that same marker is then 
 ### Unlabeled pieces
 
 Anything else gets `<last label>~<n>`, with `n` counting from one since the last labeled piece. A section
-that opens with unmarked text gets `~1`. Labels are unique within a section at every date. This is
-deliberately conservative: an unfamiliar XML shape becomes visible as an unlabeled paragraph instead of a
-silently wrong citation label.
+that opens with unmarked text gets `~1`. A repeated label is also demoted this way, so labels are unique
+within a section at every date. This is deliberately conservative: an unfamiliar XML shape becomes visible
+as an unlabeled paragraph instead of a silently wrong citation label.
 
 ## Diffs
 
@@ -177,6 +178,20 @@ document XML. It usually has high recall and low precision: preambles cite many 
 not amend. The parser uses only amendatory text and `SECTNO` headings, so it is quieter but can miss a
 section mentioned only in prose. Reporting both is the point; a single accuracy number would hide the
 trade-off.
+
+## API surface
+
+`create_app(data_dir=DATA_DIR)` builds the FastAPI app; the module-level `app` is the default-snapshot
+instance. Tests pass a temporary snapshot directory, so every endpoint takes its data from the app's
+directory and reconciliation is cached per directory. The surface is read-only:
+
+- `GET /sections/{section}?date=` resolves the date with `in_force`, so a request inside a gap returns the
+  text that was actually in force and reports it as `in_force`;
+- `GET /changes?from=&to=` refuses anything that is not a snapshot date (400) rather than silently diffing
+  the nearest one;
+- `GET /documents` and `GET /documents/{number}` share one reconciliation result, so the status counts in a
+  list entry always equal the counts of that document's rows;
+- `POST /verify` takes a Pydantic body (shape errors are 422) and rejects a non-ISO date with 400.
 
 ## Rendering the evidence
 

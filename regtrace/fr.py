@@ -49,11 +49,7 @@ def _expand(start: str, end: str, known: list[str]) -> set[str]:
     if start_number is None or end_number is None:
         return set()
     low, high = sorted((start_number, end_number))
-    return {
-        section
-        for section in known
-        if (number := _number(section)) is not None and low <= number <= high
-    }
+    return {section for section in known if (number := _number(section)) is not None and low <= number <= high}
 
 
 def instructions(number: str, data_dir: Path = DATA_DIR) -> list[Instruction]:
@@ -105,12 +101,5 @@ def instructions(number: str, data_dir: Path = DATA_DIR) -> list[Instruction]:
         sections.update(_references(text))
         for start, end in _RANGE.findall(text):
             sections.update(_expand(f"438.{start}", f"438.{end}", known))
-        result.append(
-            Instruction(
-                number,
-                instruction.number,
-                text,
-                tuple(sorted(sections, key=section_key)),
-            )
-        )
+        result.append(Instruction(number, instruction.number, text, tuple(sorted(sections, key=section_key))))
     return result

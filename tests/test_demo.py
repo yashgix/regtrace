@@ -171,6 +171,24 @@ class ReadmeTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 demo.render_readme({"dates": 2}, readme)
 
+    def test_render_readme_without_a_closing_marker_exits(self) -> None:
+        with TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\nTail.\n"
+            readme.write_text(original, encoding="utf-8")
+            with mock.patch.object(demo, "render", return_value="NEW\n"), self.assertRaises(SystemExit):
+                demo.render_readme({"dates": 2}, readme)
+            self.assertEqual(readme.read_text(encoding="utf-8"), original)
+
+    def test_render_readme_with_two_closing_markers_exits(self) -> None:
+        with TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\n{demo.EVIDENCE_END}\n\n{demo.EVIDENCE_END}\n\nTail.\n"
+            readme.write_text(original, encoding="utf-8")
+            with mock.patch.object(demo, "render", return_value="NEW\n"), self.assertRaises(SystemExit):
+                demo.render_readme({"dates": 2}, readme)
+            self.assertEqual(readme.read_text(encoding="utf-8"), original)
+
 
 class LoadMetricsTests(unittest.TestCase):
     def test_load_metrics_reads_json(self) -> None:
@@ -184,6 +202,12 @@ class LoadMetricsTests(unittest.TestCase):
             missing = Path(tmp) / "metrics.json"
             with mock.patch("experiment.compute_metrics", return_value={"dates": 2}):
                 self.assertEqual(demo._load_metrics(missing), {"dates": 2})
+
+    def test_load_metrics_required_with_missing_file_exits(self) -> None:
+        with TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "metrics.json"
+            with self.assertRaises(SystemExit):
+                demo._load_metrics(missing, required=True)
 
 
 class MainTests(unittest.TestCase):
@@ -220,6 +244,33 @@ class MainTests(unittest.TestCase):
             ):
                 demo.main()
             self.assertEqual(readme.read_text(encoding="utf-8"), "fresh")
+
+    def test_main_does_not_touch_readme_when_metrics_file_is_missing(self) -> None:
+        with TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\n{demo.EVIDENCE_END}\n\nTail.\n"
+            readme.write_text(original, encoding="utf-8")
+            missing = Path(tmp) / "missing" / "metrics.json"
+            with (
+                mock.patch.object(sys, "argv", ["demo.py", "--metrics", str(missing), "--readme", str(readme)]),
+                self.assertRaises(SystemExit),
+            ):
+                demo.main()
+            self.assertEqual(readme.read_text(encoding="utf-8"), original)
+
+    def test_main_leaves_the_readme_alone_when_a_marker_is_missing(self) -> None:
+        with TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\nTail.\n"
+            readme.write_text(original, encoding="utf-8")
+            with (
+                mock.patch.object(demo, "_load_metrics", return_value={"dates": 2}),
+                mock.patch.object(demo, "render", return_value="NEW\n"),
+                mock.patch.object(sys, "argv", ["demo.py", "--readme", str(readme)]),
+                self.assertRaises(SystemExit),
+            ):
+                demo.main()
+            self.assertEqual(readme.read_text(encoding="utf-8"), original)
 
 
 if __name__ == "__main__":

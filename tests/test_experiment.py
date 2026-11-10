@@ -20,7 +20,7 @@ def _normalize(text: str) -> str:
 
 
 def _section(section_id: str, *paragraphs: tuple[str, str]) -> Section:
-    return Section(section_id, f"\u00a7 {section_id} Heading.", tuple(Paragraph(label, text) for label, text in paragraphs))
+    return Section(section_id, f"§ {section_id} Heading.", tuple(Paragraph(label, text) for label, text in paragraphs))
 
 
 PARTS = {
@@ -54,9 +54,9 @@ VERSIONS = [
     Version("438.2", "2021-01-01", True),
 ]
 
-INSTRUCTION_MAP = {"2020-0001": [Instruction("2020-0001", 1, "Amend \u00a7 438.2.", ("438.2",))]}
+INSTRUCTION_MAP = {"2020-0001": [Instruction("2020-0001", 1, "Amend § 438.2.", ("438.2",))]}
 
-DOCUMENT_XML = {"2020-0001": "<ROOT>See \u00a7\u00a7 438.2 and 438.10.</ROOT>", "2020-0002": None}
+DOCUMENT_XML = {"2020-0001": "<ROOT>See §§ 438.2 and 438.10.</ROOT>", "2020-0002": None}
 
 EXPECTED = {
     "dates": 2,

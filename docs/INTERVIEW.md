@@ -1,95 +1,74 @@
 # Interview notes
 
-## One-minute explanation
+## The problem
 
-I built a small system that traces federal changes to 42 CFR Part 438, the Medicaid managed care rules,
-against the official point-in-time eCFR. It parses the Federal Register amendatory instructions for every
-Rule tagged to Part 438 since 2016, predicts which sections each rule amended, and then asks whether the
-eCFR actually shows a substantive version on the effective date. If not, it looks for a nearby version and
-otherwise reports the rule as unmatched. It also lists eCFR changes that no tagged rule explains, and it
-verifies a quoted citation against the text in force on a chosen date.
+Readily maps regulatory changes to health-plan policies and needs every flag tied to exact rule text and defensible to a regulator. This project builds the checkable federal half on public law: for every Federal Register document touching 42 CFR Part 438 since 2016, which sections changed, whether and when the change appears in the point-in-time eCFR, which eCFR changes no tagged document explains, and whether a quoted citation is in force at a date.
 
-The important part is not the API. It is that every result is reproducible from a pinned public snapshot,
-and the system is honest about what it cannot explain.
+## Why this approach
 
-## Why this problem
+Use pinned public-domain data and deterministic Python so every number can be checked by anyone, with no network and no LLM in this milestone. The specification puts a React viewer, DHCS letters, LLM calls and Postgres out of scope for now: the viewer needs the TypeScript pipeline, the letters are the next milestone, LLM flags need a ground truth first, and Postgres adds nothing for a few MB of data. No other implementation alternatives are recorded in the decision.
 
-Regulatory change management is an evidence problem. A health plan has to show why a policy changed, when
-the underlying rule took effect, and which citation supports the conclusion. That is hard to do with PDFs
-and spreadsheets because the text is not point-in-time and the chain of evidence is not executable.
+## Architecture
 
-This project is the public-law checking layer for that work. Readily's public description says it is an
-AI-native compliance intelligence platform that connects regulatory requirements with policies, assigned
-actions, audits and supporting evidence (source: <https://www.readily.ai/>). regtrace is not that product
-and makes no claim about it. It demonstrates the ground truth such a product needs: labeled text, explicit
-matching rules, an unexplained list, and a citation verifier that rejects a quote when it is not actually
-in force.
+A Python package, regtrace, with frozen dataclasses in model.py. data.py loads and caches the pinned eCFR and Federal Register files. labels.py assigns CFR paragraph paths. diff.py compares eCFR dates. fr.py parses amendatory instructions. reconcile.py matches rule sections to substantive eCFR versions and finds unexplained changes. cite.py verifies quotes. api.py exposes JSON-only FastAPI endpoints. experiment.py writes metrics. Tests use unittest.
 
-## What was hard
+## Data flow
 
-### Paragraph labels are inferred, not read
+Pinned upstream eCFR XML and versions JSON plus Federal Register document JSON and XML go into parsing: Part 438 sections and paragraph labels, diffs between consecutive eCFR dates, and amendatory instructions from Federal Register text. Reconciliation then maps rule sections to substantive eCFR versions and produces rows and an unexplained list. Citation verification checks quotes against point-in-time text. The API and experiment read from the same library.
 
-The eCFR XML gives paragraphs and italics, but not semantic labels. `(i)` may be a letter or a roman
-numeral. The labeler has to reconstruct the printed hierarchy from marker order, nesting depth, italics,
-and the sequence of symbols. The tricky cases are chained markers like `(d)(1)`, inline splits after an
-italic heading, definitions with their own sub-list, and headed continuations that should continue a level
-instead of opening a deeper one. Italics turn out to be a narrow signal: levels 0-3 need a non-italic
-symbol, levels 4-5 accept either, and headed detection uses a following italic run. I made the parser
-conservative: when a marker does not fit the stack, the paragraph becomes `~n` rather than a guessed
-label.
+## Trade-offs
 
-### Point-in-time matching is not exact
+eCFR is an editorial compilation, not the official legal edition. Federal Register CFR tagging may miss documents, so the unexplained list is evidence rather than proof of error. A rule's own applicability dates inside regulation text are not parsed yet. Only federal rules are covered, not state letters. Milestone 1 has no LLM, Postgres or React viewer. The label parser follows explicit rules, but the review says two specified behaviors still lack direct regression tests. The baseline has higher recall but much lower precision than the parser.
 
-eCFR is an editorial compilation. A rule can be published on one date, effective on another, and appear
-in eCFR on a third. Sometimes eCFR records a version on the publication date as well as the effective date.
-The reconciliation therefore has `matched`, `shifted`, `before_history` and `unmatched`, plus a claim rule
-for publication-date versions. The 30-day window is a deliberate trade-off: wide enough for editorial lag,
-narrow enough that unrelated amendments do not get claimed.
+## Results
 
-### The gaps are the product
+The acceptance suite passed 42/42 and the project's own suite passed 149/149. The independent review says both earlier blocking findings were fixed and found no new behavioral defect; it still returned changes because instruction carry-over across REGTEXT blocks and label progression past z to aa lack direct regression tests. Measured metrics include 38 dates, 45 documents and 26 rules; parser precision 0.955056 and recall 0.89441; baseline precision 0.431298 and recall 0.913043; citation self-valid 1.0 and perturbed rejected 1.0. Other counts include 74 matched, 11 shifted, 7 before history, 4 unmatched, 17 unexplained, 2,281 latest paragraphs and 732 paragraph changes.
 
-The unexplained list is not a bug report; it is evidence. It shows where the Federal Register's CFR
-tagging, the amendatory instruction parser, or eCFR's version history disagree. That is more useful than a
-single precision number, which is why the experiment reports parser and baseline precision and recall
-separately.
+## Limitations
 
-## How I would demo it
+The tool is not a legal edition and does not replace the official CFR. It can only reconcile documents that the Federal Register tagging surfaces; missed tagging shows up as unexplained changes. It does not yet parse applicability dates written inside regulation text. It covers federal rules only, not DHCS All Plan Letters or other state guidance. It does not include the React viewer, an LLM layer or Postgres. The review verdict is changes, so two parser regression tests should be added before calling the test coverage complete.
 
-1. Run `make test` and `python experiment.py --out results/metrics.json` to show the snapshot and the
-   deterministic metrics.
-2. Run `python demo.py --readme README.md` and show the unexplained changes and discrepancies tables that
-   were rendered from `reconcile()`.
-3. Open `uvicorn regtrace.api:app`, fetch `/sections/438.68?date=2026-07-31`, and show the labeled
-   paragraphs.
-4. Post a valid quote to `/verify`, then change the last word and show that it no longer verifies.
-5. Fetch `/unexplained` and explain one item: which section changed, on what date, and what a human would
-   check next in the Federal Register.
+## What I learned
 
-## Trade-offs I would defend
+Traceability is mostly a data-model and edge-case problem: CFR paragraph labels are ambiguous and date matching needs care. A pinned, checksummed snapshot makes results reproducible. Unexplained changes are useful evidence, not just errors. Independent review can find missing tests even when behavior is correct. A deterministic ground truth is a good base before LLM-made compliance flags. The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model.
 
-- Frozen dataclasses and tuple-returning APIs keep the data easy to reason about and safe to cache.
-- `lru_cache` keyed by `Path` and date keeps the test suite fast without a database.
-- The parser is conservative about labels. A visible `~n` is better than a wrong citation.
-- The API is read-only and JSON-only. There is no mutation surface to secure yet.
-- The metrics JSON has no timestamps and sorted keys so two runs can be compared byte for byte.
-- The README's evidence block is generated, not typed: prose can be edited freely without risking a stale
-  or invented number.
+## Talking points
 
-## What is next
+- The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model; it was not hand-written by Yash.
+- Every reported number comes from pinned public federal data and code that can be rerun; nothing is typed into the README by hand.
+- The parser is much more precise than the baseline: 0.955056 versus 0.431298, while baseline recall is higher: 0.913043 versus 0.89441.
+- Citation checks are strong on this data: 1.0 self-valid and 1.0 perturbed rejected.
+- The unexplained list is the honest edge of the method: it shows where Federal Register tagging and eCFR versions do not line up.
+- The independent review returned changes only for missing regression tests, not for a new behavioral defect.
+- This maps directly to Readily's need for flags tied to exact rule text: it builds the checkable federal ground truth first.
+- Next steps in the spec are a React viewer, DHCS All Plan Letters, and LLM compliance flags checked against this ground truth.
 
-- A React viewer over the existing API: section timeline, diff view, unexplained queue, citation checker.
-- DHCS All Plan Letters and other state Medicaid guidance, with the same point-in-time and evidence model.
-- LLM-made compliance flags checked against this ground truth: the model can propose that a policy clause
-  is affected, but the citation and effective date are verified here.
-- Parsing applicability dates from regulation text instead of relying only on the Federal Register
-  metadata.
-- A reviewer workflow for unexplained changes, with an explicit reason code when a change is accepted as
-  out of scope.
+## Questions to expect
 
-## Questions I would ask
+**How do you know the paragraph labels are right?**
 
-- Which sources are authoritative for a Medi-Cal plan: federal rules, CMS guidance, DHCS letters, or the
-  contract?
-- How long does a compliance team need to keep the evidence chain for an audit?
-- When a rule changes, who signs off that a policy redline is complete?
-- What false-positive rate is tolerable for a compliance flag that a human must review?
+The labels follow explicit specification rules and are covered by tests. The independent review found no behavioral defect, but it did flag two specified cases that need direct regression tests.
+
+**Why not use an LLM for this?**
+
+Milestone 1 needed a deterministic, checkable ground truth on public law. LLM calls are out of scope here and can be tested later against this base.
+
+**How do you handle date mismatches between the Federal Register and eCFR?**
+
+Reconciliation marks rows matched, shifted, before history or unmatched, and lists eCFR changes that no tagged document explains. The unexplained list is the evidence.
+
+**Why no database?**
+
+The pinned data is only a few MB, so Postgres adds operational cost without helping this milestone.
+
+**What is the weakest part?**
+
+eCFR is editorial, Federal Register tagging can miss documents, applicability dates inside rule text are not parsed, and state guidance is not covered yet.
+
+**Why is parser recall lower than the baseline?**
+
+The baseline predicts every section number that appears anywhere in a document, which is broad. The parser is narrower and more precise, so it misses more but produces fewer false sections.
+
+**How would this fit Readily's product?**
+
+It builds the traceable federal citation and change layer that compliance flags need. It does not claim anything about Readily's internal product or data.

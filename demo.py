@@ -24,7 +24,7 @@ def _normalize(text: str) -> str:
 
 def _short(text: str, limit: int = 90) -> str:
     text = _normalize(text)
-    return text if len(text) <= limit else text[: limit - 1].rstrip() + "\u2026"
+    return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
 def _cell(value: object) -> str:
@@ -52,10 +52,7 @@ def _unexplained_table(unexplained: list[tuple[str, str]]) -> str:
     for section_id, day in unexplained:
         section = parts[day].sections.get(section_id)
         heading = section.heading if section is not None else ""
-        next_check = (
-            f"Check Federal Register documents around {day} "
-            f"for an untagged \u00a7 {section_id} amendment."
-        )
+        next_check = f"Check Federal Register documents around {day} for an untagged § {section_id} amendment."
         rows.append((section_id, day, _short(heading, 80), next_check))
     return "### Unexplained changes\n\n" + _table(("section", "date", "heading", "next check"), rows)
 
@@ -68,11 +65,12 @@ def _discrepancy_table(rows: list[Row]) -> str:
             continue
         document = by_number[row.document]
         expected = document.effective_on or document.publication_date
-        discrepancies.append((row.document, row.section, expected, row.date or "\u2014", row.status))
+        discrepancies.append((row.document, row.section, expected, row.date or "—", row.status))
     if not discrepancies:
         return "### Discrepancies\n\n_None._"
     return "### Discrepancies\n\n" + _table(
-        ("document", "section", "expected", "eCFR date", "status"), discrepancies
+        ("document", "section", "expected", "eCFR date", "status"),
+        discrepancies,
     )
 
 
@@ -106,7 +104,8 @@ def _walkthrough() -> str:
         changes = diff(load_part(previous), part)
         lines += ["", f"Changes from `{previous}` to `{latest}`: {len(changes)}."]
         for change in changes[:5]:
-            lines.append(f"- `{change.kind}` {change.section} {change.label or 'heading'}")
+            label = change.label or "heading"
+            lines.append(f"- `{change.kind}` {change.section} {label}")
     choice = _first_quote(part)
     if choice is not None:
         chosen_section, paragraph, quote = choice
@@ -139,19 +138,21 @@ def render_readme(metrics: dict[str, int | float], readme: Path) -> str:
     head, marker, rest = text.partition(EVIDENCE_START)
     if not marker:
         raise SystemExit(f"{readme} has no {EVIDENCE_START} ... {EVIDENCE_END} block")
-    _, _, tail = rest.partition(EVIDENCE_END)
+    _, end_marker, tail = rest.partition(EVIDENCE_END)
+    if not end_marker or EVIDENCE_END in tail:
+        raise SystemExit(f"{readme} must have exactly one {EVIDENCE_END} after {EVIDENCE_START}")
     return f"{head}{EVIDENCE_START}\n\n{render(metrics).rstrip()}\n\n{EVIDENCE_END}{tail}"
 
 
-def _load_metrics(path: Path) -> dict[str, int | float]:
+def _load_metrics(path: Path, *, required: bool = False) -> dict[str, int | float]:
     if path.is_file():
         return json.loads(path.read_text(encoding="utf-8"))
+    if required:
+        raise SystemExit(f"{path} not found; run `python experiment.py --out {path}` first")
     try:
         from experiment import compute_metrics
     except ImportError as exc:
-        raise SystemExit(
-            f"{path} not found; run `python experiment.py --out {path}` first"
-        ) from exc
+        raise SystemExit(f"{path} not found; run `python experiment.py --out {path}` first") from exc
     return compute_metrics()
 
 
@@ -162,9 +163,11 @@ def main() -> None:
     parser.add_argument("--readme", type=Path, help="refresh the generated block inside this README")
     args = parser.parse_args()
 
-    metrics = _load_metrics(args.metrics)
+    metrics = _load_metrics(args.metrics, required=args.readme is not None)
     if args.readme is not None:
-        args.readme.write_text(render_readme(metrics, args.readme), encoding="utf-8")
+        # Render before writing so a malformed README is never touched.
+        rendered = render_readme(metrics, args.readme)
+        args.readme.write_text(rendered, encoding="utf-8")
         return
 
     text = render(metrics)

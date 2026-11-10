@@ -14,7 +14,7 @@ QUOTE = "Providers must meet the network adequacy standards"
 def _section(section_id: str, *paragraphs: tuple[str, str]) -> Section:
     return Section(
         section_id,
-        f"§ {section_id} Heading.",
+        f"\u00a7 {section_id} Heading.",
         tuple(Paragraph(label, text) for label, text in paragraphs),
     )
 

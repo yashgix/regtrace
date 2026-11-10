@@ -48,15 +48,29 @@ Readily's customers, data, accuracy or internal implementation. What it demonstr
 layer such work needs: point-in-time text, explicit matching rules, a list of changes nobody explains,
 and a citation verifier that fails closed.
 
+## How it works
+
+Four separable jobs, one module each:
+
+1. `regtrace/labels.py` turns eCFR XML into CFR-style labeled paragraphs (`(b)(1)(i)`, `def:Abuse`, `~1`).
+2. `regtrace/diff.py` diffs two labeled snapshots into ordered change records.
+3. `regtrace/fr.py` parses Federal Register amendatory instructions into section claims.
+4. `regtrace/reconcile.py` and `regtrace/cite.py` reconcile those claims against eCFR section versions and
+   verify quoted citations.
+
+Keeping the jobs separate is what makes the unexplained list meaningful: a parser bug shows up as a label
+anomaly, a reconciliation miss as an unexplained `(section, date)`, a citation miss as a failed substring
+check. The design notes are in `docs/DESIGN.md`.
+
 ## Data in this repository
 
 `upstream/` is a pinned snapshot of US federal works (public domain):
 
-- `upstream/ecfr/part438-YYYY-MM-DD.xml`: the full eCFR XML of 42 CFR Part 438 on each date a section
-  changed. The snapshot has 38 dates, from 2017-01-01 (the start of eCFR history) to 2026-07-31.
+- `upstream/ecfr/part438-YYYY-MM-DD.xml`: the full eCFR XML of 42 CFR Part 438, one file per date on which
+  any section of the part changed, from the start of eCFR history onward.
 - `upstream/ecfr/versions.json`: eCFR section versions with `substantive` and `removed` flags.
-- `upstream/fr/documents.json`: 45 Federal Register documents tagged to 42 CFR 438 since 2016, oldest
-  first. 26 are Rules; the rest are Proposed Rules and related notices.
+- `upstream/fr/documents.json`: the Federal Register documents tagged to 42 CFR 438 since 2016, oldest
+  first: Rules, Proposed Rules and related notices alike.
 - `upstream/fr/<document_number>.xml`: full text for documents that have it.
 
 `upstream/MANIFEST.json` records the source URL, SHA-256 and byte size of every file, plus the fetch
@@ -84,20 +98,23 @@ checksums. `experiment.py` writes deterministic metrics. `demo.py` renders the e
 and, with `--readme`, refreshes it in place; without that flag it prints the same Markdown to stdout,
 so a reviewer can diff the tables without touching this file. The API is read-only.
 
+Example request and response shapes are in `examples/`.
+
 ## Results
 
-Three counts are fixed by the snapshot and asserted by the test suite:
+No number below is typed by hand. The snapshot counts are asserted by the test suite, and every value is
+rendered from `results/metrics.json`, whose keys are:
 
-| item | count |
-|---|---:|
-| eCFR snapshot dates | 38 |
-| Federal Register documents | 45 |
-| Rule documents | 26 |
+- snapshot shape: `dates`, `sections_latest`, `paragraphs_latest`, `unlabeled_latest`, `paragraph_changes`;
+- inputs: `documents`, `rules`, `rules_with_instructions`, `instructions`, `rule_sections`;
+- reconciliation: `matched`, `shifted`, `before_history`, `unmatched`, `unexplained`;
+- citation self-checks: `citation_self_valid`, `citation_perturbed_rejected`;
+- parser versus baseline: `parser_precision`, `parser_recall`, `baseline_precision`, `baseline_recall`.
 
-Every other number here is computed, never typed. `experiment.py` writes a numbers-only metrics
-object (snapshot counts, reconciliation tallies, citation self-checks and perturbation checks, and
-parser-versus-baseline precision and recall) to `results/metrics.json`. `demo.py` renders that object
-together with `reconcile()` into the block below, which is the only generated part of this file.
+`experiment.py` writes that numbers-only object (snapshot counts, reconciliation tallies, citation
+self-checks and perturbation checks, and parser-versus-baseline precision and recall) to
+`results/metrics.json`. `demo.py` renders it together with `reconcile()` into the block below, which is the
+only generated part of this file.
 
 Two of the tables are the point of the project. **Unexplained changes** lists every substantive
 `(section, date)` that no Rule row claims, with the section heading and the next human check.
@@ -107,8 +124,11 @@ tables change with it.
 
 <!-- regtrace:evidence:start -->
 
-_Run `python demo.py --readme README.md` to render the metrics, unexplained changes, discrepancies and
-walk-through tables into this block._
+_This block is generated, never typed. It stays between the two markers so `python demo.py --readme
+README.md` can splice it in place: metrics table, unexplained changes, discrepancies and the
+citation walk-through are rendered from `results/metrics.json` and `reconcile()`. Run
+`python experiment.py --out results/metrics.json` and then `python demo.py --readme README.md` to fill
+it; `python demo.py` prints the same Markdown to stdout for a diff._
 
 <!-- regtrace:evidence:end -->
 
@@ -143,8 +163,6 @@ All responses are JSON; dates are `YYYY-MM-DD`.
 - `POST /verify` -> verify a quote for a section, label and date. Bad JSON shape is 422; an invalid date
   is 400.
 
-Example request and response shapes are in `examples/`.
-
 ## Limits
 
 - The eCFR is an editorial compilation, not the official legal edition. The official edition is the
@@ -167,8 +185,9 @@ Sources:
   point-in-time full XML at <https://www.ecfr.gov/api/versioner/v1/full/YYYY-MM-DD/title-42.xml?part=438>.
 - Federal Register API: <https://www.federalregister.gov/api/v1/documents.json> filtered to 42 CFR 438.
 
-Every downloaded file is checksummed in `upstream/MANIFEST.json`. `tools/fetch_data.py --verify` recomputes
-SHA-256 and fails if a byte changed. Re-fetching is explicit; tests and the API never fetch.
+Every downloaded file is checksummed in `upstream/MANIFEST.json` (fetch time
+2026-11-10T07:19:08+00:00). `tools/fetch_data.py --verify` recomputes SHA-256 and fails if a byte
+changed; `make data-check` runs it. Re-fetching is explicit; tests and the API never fetch.
 
 ## Build note
 
