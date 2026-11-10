@@ -159,15 +159,15 @@ def _load_metrics(path: Path, *, required: bool = False) -> dict[str, int | floa
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics", type=Path, default=METRICS_PATH)
-    parser.add_argument("--out", type=Path, help="write the rendered evidence here instead of stdout")
-    parser.add_argument("--readme", type=Path, help="refresh the generated block inside this README")
+    parser.add_argument("--out", type=Path, help="write the output here (with --readme: the whole rendered README)")
+    parser.add_argument("--readme", type=Path, help="render the generated block of this README (in place without --out)")
     args = parser.parse_args()
 
     metrics = _load_metrics(args.metrics, required=args.readme is not None)
     if args.readme is not None:
         # Render before writing so a malformed README is never touched.
         rendered = render_readme(metrics, args.readme)
-        args.readme.write_text(rendered, encoding="utf-8")
+        (args.out or args.readme).write_text(rendered, encoding="utf-8")
         return
 
     text = render(metrics)
