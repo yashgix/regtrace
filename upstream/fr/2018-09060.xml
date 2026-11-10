@@ -1,0 +1,14 @@
+<RULE>
+            <PREAMB>
+                <AGENCY TYPE="N">DEPARTMENT OF HEALTH AND HUMAN SERVICES</AGENCY>
+                <SUBAGY>Centers for Medicare &amp; Medicaid Services</SUBAGY>
+                <CFR>42 CFR Part 438</CFR>
+                <SUBJECT>Managed Care</SUBJECT>
+                <HD SOURCE="HD2">CFR Correction</HD>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR> In Title 42 of the Code of Federal Regulations, Parts 430 to 481, revised as of October 1, 2017, on page 295, in § 438.214, paragraph (c) [Reserved] is removed and “(2) [Reserved]” is added in its place.</AMDPAR>
+                </REGTEXT>
+            </PREAMB>
+            <FRDOC>[FR Doc. 2018-09060 Filed 4-26-18; 8:45 am]</FRDOC>
+            <BILCOD> BILLING CODE 1301-00-D</BILCOD>
+        </RULE>

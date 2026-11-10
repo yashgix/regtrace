@@ -1,0 +1,12 @@
+[project]
+name = "regtrace"
+version = "0.1.0"
+description = "Trace every federal change to 42 CFR Part 438 against the official point-in-time eCFR"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

@@ -1,0 +1,430 @@
+{
+ "fetched_at": "2026-11-10T07:19:08+00:00",
+ "files": {
+  "ecfr/versions.json": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-42.json?part=438",
+   "sha256": "48043cfa157e4e50ad2ce768ad47dff2dcd0fc22406026a18b8035ec30501677",
+   "bytes": 78203
+  },
+  "ecfr/part438-2017-01-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2017-01-01/title-42.xml?part=438",
+   "sha256": "75989824ab8e2cde38a379f577e0f14b236d9dc85512d501a69eaa871e0fec6a",
+   "bytes": 356933
+  },
+  "ecfr/part438-2017-01-18.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2017-01-18/title-42.xml?part=438",
+   "sha256": "db311cab21e1ab886f837ecfce70b279ab2306f2a31b4e52d7bb1cee9c088f59",
+   "bytes": 357897
+  },
+  "ecfr/part438-2017-03-06.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2017-03-06/title-42.xml?part=438",
+   "sha256": "34a0aaaa994067e83aa976155ac7f1b0f63b3dd7cb542bf3848df3ac74ba7024",
+   "bytes": 357716
+  },
+  "ecfr/part438-2017-03-20.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2017-03-20/title-42.xml?part=438",
+   "sha256": "ee47f4a65298981ae250c568092acafac93a6a6fa46da00e73d2ba3953bd28e7",
+   "bytes": 359705
+  },
+  "ecfr/part438-2018-04-27.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2018-04-27/title-42.xml?part=438",
+   "sha256": "80aa4b7f9634311b8a1ac7a3d7283cd19cb29e4950a58bbd3447b5c576204c76",
+   "bytes": 359705
+  },
+  "ecfr/part438-2019-04-16.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2019-04-16/title-42.xml?part=438",
+   "sha256": "a3aa467f129b8bfee77c7a2f5b05d23b510a64458ce570047fbf9f08de5f0688",
+   "bytes": 360105
+  },
+  "ecfr/part438-2020-05-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-05-01/title-42.xml?part=438",
+   "sha256": "b27ee27bf4efc5516240184f7372f2f93e6b8e3612aa0b4e5e44c97b03d5dc99",
+   "bytes": 360260
+  },
+  "ecfr/part438-2020-06-19.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-06-19/title-42.xml?part=438",
+   "sha256": "8cc203bcca34e178e515de156f064ff6f8ccd0e947aa7563a6cbd52067c1ae3f",
+   "bytes": 360460
+  },
+  "ecfr/part438-2020-06-30.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-06-30/title-42.xml?part=438",
+   "sha256": "8d99acab0f3f9d9d4006137cd380374808573d6fea7c5f22437960ef1dcb618a",
+   "bytes": 362368
+  },
+  "ecfr/part438-2020-08-18.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-08-18/title-42.xml?part=438",
+   "sha256": "a9ff4c9f8d560e45cacae40ff3abf9518db490a5100316bd5486ab4ee5d5b08b",
+   "bytes": 362237
+  },
+  "ecfr/part438-2020-11-13.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-11-13/title-42.xml?part=438",
+   "sha256": "4d1596e5aa30f11ce7f22459605663f55424bd92d9e9d87c8bee4513274384bb",
+   "bytes": 364537
+  },
+  "ecfr/part438-2020-12-14.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-12-14/title-42.xml?part=438",
+   "sha256": "da017e029311517a61d1340aebd88593a812db329cbac99f66a064c8fe45c055",
+   "bytes": 374993
+  },
+  "ecfr/part438-2020-12-31.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2020-12-31/title-42.xml?part=438",
+   "sha256": "5ca43144c8de91677822d27e3f0c7d4a082645033a2f300912a056f0ca44ea97",
+   "bytes": 375093
+  },
+  "ecfr/part438-2021-01-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-01-01/title-42.xml?part=438",
+   "sha256": "c1f761457419bc478a7c92dc3fe80da47b98f8147629344a3e871b9674f85c31",
+   "bytes": 376945
+  },
+  "ecfr/part438-2021-01-12.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-01-12/title-42.xml?part=438",
+   "sha256": "eb69e8865d4bba0f04a7f74944e8215f02e1d0a0d120203e3f08efa2c6c3a92b",
+   "bytes": 374891
+  },
+  "ecfr/part438-2021-03-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-03-01/title-42.xml?part=438",
+   "sha256": "1faf8015b630d4c921e38a1d1ff74abd7c2a60a2fe9183829b41534dbfc073e0",
+   "bytes": 374864
+  },
+  "ecfr/part438-2021-03-11.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-03-11/title-42.xml?part=438",
+   "sha256": "e4c6125431bf0f67502efab19b7baf3b6da2b6d48a0df0d4dd1b29a881236cb8",
+   "bytes": 374576
+  },
+  "ecfr/part438-2021-04-29.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-04-29/title-42.xml?part=438",
+   "sha256": "b2e184b00e1b43f068be99775e226ad3e03225bd553ad3a9d45ed584bd984fe6",
+   "bytes": 374093
+  },
+  "ecfr/part438-2021-07-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2021-07-01/title-42.xml?part=438",
+   "sha256": "97e9c34e84cb904022448e32ec2ce9ab677b27a9f7638824eabcc6e13ec46eb7",
+   "bytes": 381538
+  },
+  "ecfr/part438-2024-02-08.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-02-08/title-42.xml?part=438",
+   "sha256": "785657bca99610cc6e870e2e27bc4eeb9b64c4107f03506a5d604891e3edb102",
+   "bytes": 382037
+  },
+  "ecfr/part438-2024-04-08.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-04-08/title-42.xml?part=438",
+   "sha256": "86d0fc2dcd5020a3c41da0cd729df3af88ab5a2a50c8e8d573699519c223a45b",
+   "bytes": 383955
+  },
+  "ecfr/part438-2024-05-06.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-05-06/title-42.xml?part=438",
+   "sha256": "50ef494cdfbb8aa8f785020f2f9a09003e6371894415a4e92558c94d8ebaf335",
+   "bytes": 384175
+  },
+  "ecfr/part438-2024-05-10.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-05-10/title-42.xml?part=438",
+   "sha256": "9079db5d860402a1afb029da973861d1c1ca959d6226fa08bcde667522c9014b",
+   "bytes": 387518
+  },
+  "ecfr/part438-2024-06-21.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-06-21/title-42.xml?part=438",
+   "sha256": "58f9671d205f70ef8f12a0e465453fa801682fdb165d87ce410cbb9621604c81",
+   "bytes": 387799
+  },
+  "ecfr/part438-2024-06-24.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-06-24/title-42.xml?part=438",
+   "sha256": "9d2a130f10a0e46ad8051fd6cd1f6c2305afb56e9f114a1c678d931984128337",
+   "bytes": 388023
+  },
+  "ecfr/part438-2024-06-27.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-06-27/title-42.xml?part=438",
+   "sha256": "e917254e870e94f476ed2718e3703c7e6b13da37c2c2fd725c374d1750e035bf",
+   "bytes": 388135
+  },
+  "ecfr/part438-2024-07-05.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-07-05/title-42.xml?part=438",
+   "sha256": "809aa640333c25b7cb37be8429f6d25258fee74d25d81795c6fcc6cd07a81a1c",
+   "bytes": 388454
+  },
+  "ecfr/part438-2024-07-09.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-07-09/title-42.xml?part=438",
+   "sha256": "eea90f9ea543476156f8eea03013b647781585f957955742c35e04d1f8869e83",
+   "bytes": 481487
+  },
+  "ecfr/part438-2024-09-24.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-09-24/title-42.xml?part=438",
+   "sha256": "581be9a12faf8cf66a5e4a0387c211dcf7d3fe1f5d74404a7ea584fc7655de77",
+   "bytes": 477926
+  },
+  "ecfr/part438-2024-09-26.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-09-26/title-42.xml?part=438",
+   "sha256": "5f96ebbf5e2bb447f166483e2c2924caf96b9a4daba4802bacdeb41d19185c80",
+   "bytes": 478039
+  },
+  "ecfr/part438-2024-10-02.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-10-02/title-42.xml?part=438",
+   "sha256": "93832b8b26ca927a62ee25adb7fa6e8101af11cd33d4a3314b319a89629c8ebc",
+   "bytes": 478152
+  },
+  "ecfr/part438-2024-10-23.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-10-23/title-42.xml?part=438",
+   "sha256": "bc05df4e3aaaa823e7abb4f8296dc6a04878e92437ad42800bbd6105a1955ae8",
+   "bytes": 478886
+  },
+  "ecfr/part438-2024-11-19.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-11-19/title-42.xml?part=438",
+   "sha256": "f2431a23b69ab02c1cc5ac5ee0847703ad6ebfb2103b1b93423fedd46dc94393",
+   "bytes": 479884
+  },
+  "ecfr/part438-2024-12-19.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2024-12-19/title-42.xml?part=438",
+   "sha256": "d8842c6784e7e15c23128eb727725def2a0983ac11ccd4976b67f28fee19d829",
+   "bytes": 480220
+  },
+  "ecfr/part438-2025-10-01.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2025-10-01/title-42.xml?part=438",
+   "sha256": "96d81b5af3728d092e5469cfbef4a64a96442867b1588bc1842908c2f5dd9e32",
+   "bytes": 480207
+  },
+  "ecfr/part438-2026-02-25.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-02-25/title-42.xml?part=438",
+   "sha256": "ce17021d6f66a7f1e61e887a2437b31cdf2803d0a0b24ccdb2d63a65d306c40d",
+   "bytes": 480447
+  },
+  "ecfr/part438-2026-06-03.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-06-03/title-42.xml?part=438",
+   "sha256": "1a78124bd033aad46697935fa08dbe25212508cbe36407545716d92eb3d96546",
+   "bytes": 480680
+  },
+  "ecfr/part438-2026-07-31.xml": {
+   "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-07-31/title-42.xml?part=438",
+   "sha256": "910279bed9d0789a56e81752d596181d98405d02fe5578f1f8f789a636b9e1cc",
+   "bytes": 481064
+  },
+  "fr/documents.json": {
+   "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=100&conditions[cfr][title]=42&conditions[cfr][part]=438&conditions[publication_date][gte]=2016-01-01&order=oldest&fields[]=document_number&fields[]=title&fields[]=type&fields[]=action&fields[]=publication_date&fields[]=effective_on&fields[]=dates&fields[]=cfr_references&fields[]=correction_of&fields[]=corrections&fields[]=full_text_xml_url&fields[]=html_url&fields[]=citation&fields[]=start_page&fields[]=end_page",
+   "sha256": "8ed58bbf604d42e8c9d572d809747bbcdd2138e92e71b5899f517ea2177c4e15",
+   "bytes": 51770
+  },
+  "fr/2016-06876.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2016/03/30/2016-06876.xml",
+   "sha256": "d391964dfe9a704bf4bbb29993db4199777a8e5a4c2056f888d12b0a68220cde",
+   "bytes": 519193
+  },
+  "fr/2016-09581.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2016/05/06/2016-09581.xml",
+   "sha256": "a0b53a2787925979e7a2c97b533a99403f1745aa8a79f7620f9ecc7ff9fe6ca3",
+   "bytes": 3285433
+  },
+  "fr/2016-28024.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2016/11/22/2016-28024.xml",
+   "sha256": "493d6140e420af40a7dcfb90385b15fd803237f938f531b23a20fa6b8c8259e7",
+   "bytes": 66974
+  },
+  "fr/2016-31650.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2017/01/03/2016-31650.xml",
+   "sha256": "13156fcd8cff3688267b6434817267db12d4b51a375fbbf9fc0b9e347fbbcfc8",
+   "bytes": 31752
+  },
+  "fr/2017-00916.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2017/01/18/2017-00916.xml",
+   "sha256": "a34d5daf29c7fd305ac6b8f2c0186cf8ac268e143cdde7b3292640618814af4f",
+   "bytes": 117115
+  },
+  "fr/2017-04307.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2017/03/06/2017-04307.xml",
+   "sha256": "5b9d0ed2c8e036e7b8e6ff5bdc5b8da454e90ebe489bd34b72634e6e0225ca1b",
+   "bytes": 8965
+  },
+  "fr/2018-09060.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2018/04/27/2018-09060.xml",
+   "sha256": "9c95c53086ac029a224814142ea373bb90c6ff8a979d75c41a4f16c79bf49dcd",
+   "bytes": 817
+  },
+  "fr/2018-23599.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2018/11/01/2018-23599.xml",
+   "sha256": "91cb54ec9088d2501d0f8ed7ff3fd4964bcef8ec1600209e14b1394f52f05d9d",
+   "bytes": 759150
+  },
+  "fr/2018-24626.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2018/11/14/2018-24626.xml",
+   "sha256": "ceff1f45795fe9a47d4af7bb82ecde7eb69f46054f45a0e7f2e25a99101b0d18",
+   "bytes": 313643
+  },
+  "fr/2019-02200.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2019/03/04/2019-02200.xml",
+   "sha256": "9c08c0f474b80f4aa1fce89079bc43e8dba81a40bfc5cd99aaea4551f4cf045f",
+   "bytes": 614613
+  },
+  "fr/2019-06822.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2019/04/16/2019-06822.xml",
+   "sha256": "4c792d16dbc9a27991cb473ca1443260186c90e62531bbeb1f10a369cf812d63",
+   "bytes": 1408931
+  },
+  "fr/2019-08181.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2019/04/23/2019-08181.xml",
+   "sha256": "185bc2039c337bd8cf275d1634c25fb575f7b2e2bf129446a35c46ed68aab4df",
+   "bytes": 7214
+  },
+  "fr/2019-11923.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2019/06/07/2019-11923.xml",
+   "sha256": "384c13f2907d18f026434076341df7f4148b94ad07656cc38064cd513aebfc63",
+   "bytes": 21456
+  },
+  "fr/2019-11512.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2019/06/14/2019-11512.xml",
+   "sha256": "dbac7c7007650eef72654ed369168ebc640a42b8a38da094e00aad4945eb9dbd",
+   "bytes": 541082
+  },
+  "fr/2020-05050.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/05/01/2020-05050.xml",
+   "sha256": "7727dce9ebf16f9dbc17bb0b49351379698b68ebf2c7924385bdfaaeb70fb245",
+   "bytes": 1145144
+  },
+  "fr/2020-11758.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/06/19/2020-11758.xml",
+   "sha256": "ff4a3e162be7246c9a220c69dca3a53a748f1957d988384ce0f428af4a383eab",
+   "bytes": 951949
+  },
+  "fr/2020-12970.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/06/19/2020-12970.xml",
+   "sha256": "c85c906980e5d92f8c0691dd69e4065d678e29c7786a40f58d7df816ba0c443e",
+   "bytes": 335151
+  },
+  "fr/2020-24758.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/11/13/2020-24758.xml",
+   "sha256": "8e1cb6aee27e65f75a9e4a02334e06f7c81989d739ed96843cbbcfcda84e74d2",
+   "bytes": 788923
+  },
+  "fr/2020-27593.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/12/18/2020-27593.xml",
+   "sha256": "89d858a636fe2a99cde255f64373360a0310a9614bd976ae216fc54c9f03895f",
+   "bytes": 752593
+  },
+  "fr/2020-28567.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2020/12/31/2020-28567.xml",
+   "sha256": "b154a66dbe073cef235899f98dcf80c28989892d6834640026efe7924f300837",
+   "bytes": 941149
+  },
+  "fr/2021-11160.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2021/05/28/2021-11160.xml",
+   "sha256": "d556855b768c455169aae2e243d897d685962af7ed0db3a6a7597482d89ebe05",
+   "bytes": 31181
+  },
+  "fr/2021-22908.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2021/10/21/2021-22908.xml",
+   "sha256": "2e63d71563c55838fe7e647f881a85a7334ee56f606ad82cdeafffacdd373fb8",
+   "bytes": 6236
+  },
+  "fr/2021-26764.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2021/12/10/2021-26764.xml",
+   "sha256": "f8e6f7a5e4c1ccd969abe10ad6a29f3898696b3d495a9aecf3ee977c595f19cf",
+   "bytes": 9416
+  },
+  "fr/2022-16217.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2022/08/04/2022-16217.xml",
+   "sha256": "1f376637b5318d465e1f3c7cf4f9dc1eb5bd494130f7142a3d7239f64fbed665",
+   "bytes": 1132957
+  },
+  "fr/2022-23563.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2022/11/01/2022-23563.xml",
+   "sha256": "b952131368168f9069ff90b604a80fa93cec8a0f9f7e17f34c447d44a882531c",
+   "bytes": 5695
+  },
+  "fr/2022-26479.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2022/12/13/2022-26479.xml",
+   "sha256": "a4271a0dcb7471a4347caca1810e63822701c92cafd128a49e2a9c579e10ab2f",
+   "bytes": 990846
+  },
+  "fr/2023-08959.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2023/05/03/2023-08959.xml",
+   "sha256": "e871b8c30ee7ef7e127a3a8c5cf4a704475e1878ba17998e4b0af340ad3d9090",
+   "bytes": 1259876
+  },
+  "fr/2023-08961.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2023/05/03/2023-08961.xml",
+   "sha256": "72c8be91b174cc24ce6029c17344b32f9a223f4ce0ea1ec9d7dddc5b3ea60233",
+   "bytes": 1280507
+  },
+  "fr/2023-10934.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2023/05/26/2023-10934.xml",
+   "sha256": "6ce115b84340de1f2e4fed0b5a7013476f3e8b2019f824d775158274ba3074f1",
+   "bytes": 501348
+  },
+  "fr/2023-18781.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2023/09/06/2023-18781.xml",
+   "sha256": "fda93f8c182e463d37f22d83214dfe08928ac96244c2bf9b9780c93deadaa729",
+   "bytes": 823094
+  },
+  "fr/2024-00895.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/02/08/2024-00895.xml",
+   "sha256": "564dd75e5fcf79633880127b81c7efa69d509776fb90ec9ce814bfdf682d92a6",
+   "bytes": 1821036
+  },
+  "fr/2024-08711.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/05/06/2024-08711.xml",
+   "sha256": "aec18e4f13fad6293850ff0199ee81352f7faf2dcf8395ac12cf8d3826510f75",
+   "bytes": 1845954
+  },
+  "fr/2024-08085.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/05/10/2024-08085.xml",
+   "sha256": "01f2b56358ea8e436182a8406fb549a19364d1f0eff5c55d13eca75eccca14f0",
+   "bytes": 2308325
+  },
+  "fr/2024-08273.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/05/10/2024-08273.xml",
+   "sha256": "16e037f8d01871485aa1b32a44efc02b39c26cade2b501b0d485f895c3a38be3",
+   "bytes": 784997
+  },
+  "fr/2024-08363.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/05/10/2024-08363.xml",
+   "sha256": "6d2ba27cd3714622156df4616f6fcfb30a786331a0a0c6e7ada2250c399b3f87",
+   "bytes": 2599941
+  },
+  "fr/2024-13712.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/06/24/2024-13712.xml",
+   "sha256": "0b74765c79fd99d0200926346a46c1a44705d43b297f25ae1ae74d0725617ab6",
+   "bytes": 26576
+  },
+  "fr/2024-13795.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/06/24/2024-13795.xml",
+   "sha256": "a0b68117e77182aa4bd0559e2a3ec45ea1cf8c2cbe6d6cb388c9871995c412dd",
+   "bytes": 20438
+  },
+  "fr/2024-14030.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/06/27/2024-14030.xml",
+   "sha256": "c30120a1658eb3aae41296c5d41818b394cbb010c31f22ae98e5a17d9041a206",
+   "bytes": 35374
+  },
+  "fr/2024-21254.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2024/09/26/2024-21254.xml",
+   "sha256": "e5cb5fa39f92a15f34387c036f5cf0532647e5e6ffd83c0b3b97fd63be8e28eb",
+   "bytes": 575368
+  },
+  "fr/2026-03779.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/02/25/2026-03779.xml",
+   "sha256": "df02c921343becc2fc645b164fd27964f70f4a4ceebcca496483b20e679ce0e1",
+   "bytes": 1508
+  },
+  "fr/2026-07205.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/04/14/2026-07205.xml",
+   "sha256": "9e24aae851c5e342b858aefe6b22d33742f252107ba2ee5fc3fb8760ffd611a1",
+   "bytes": 1316846
+  },
+  "fr/2026-10292.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/05/22/2026-10292.xml",
+   "sha256": "439f6ff1da2b7534146c4c0eae50fe422a303822fb686a1145402b3f28bb176c",
+   "bytes": 472122
+  },
+  "fr/2026-11015.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/06/02/2026-11015.xml",
+   "sha256": "5ec957052919699b3e91565c304c225eb98d0af2c4a90b7b95b4200f8309e224",
+   "bytes": 10773
+  },
+  "fr/2026-11094.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/06/03/2026-11094.xml",
+   "sha256": "6d8bce7ffa4d6af44f42ab82d1f0d2a237f433dac951fe1df0d826e4322cc430",
+   "bytes": 967974
+  },
+  "fr/C1-2026-11094.xml": {
+   "url": "https://www.federalregister.gov/documents/full_text/xml/2026/06/29/C1-2026-11094.xml",
+   "sha256": "ecece41810ab13c3bd27fb38d2d175489456d37195ef7a7011626c57215e4347",
+   "bytes": 35097
+  }
+ }
+}

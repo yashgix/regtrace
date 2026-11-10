@@ -1,0 +1,23 @@
+<RULE>
+            <PREAMB>
+                <AGENCY TYPE="N">DEPARTMENT OF HEALTH AND HUMAN SERVICES</AGENCY>
+                <SUBAGY>Centers for Medicare &amp; Medicaid Services</SUBAGY>
+                <CFR>42 CFR Part 438</CFR>
+                <SUBJECT>Managed Care</SUBJECT>
+                <HD SOURCE="HD2">CFR Correction</HD>
+                <P>This rule is being published by the Office of the Federal Register to correct an editorial or technical error that appeared in the most recent annual revision of the Code of Federal Regulations.</P>
+                <P>In Title 42 of the Code of Federal Regulations, Parts 430 to 481, revised as of October 1, 2025, in section 438.72, reinstate paragraph (a) to read as follows:</P>
+                <SECTION>
+                    <SECTNO>§ 438.72</SECTNO>
+                    <SUBJECT> Additional requirements for long-term services and supports.</SUBJECT>
+                    <P>
+                        (a) 
+                        <E T="03">Nursing facility services and services delivered in intermediate care facilities for individuals with intellectual disabilities (ICFs/IID).</E>
+                         The State must comply with the requirements in § 442.43 for nursing facility and ICF/IID services.
+                    </P>
+                    <STARS/>
+                </SECTION>
+            </PREAMB>
+            <FRDOC>[FR Doc. 2026-03779 Filed 2-24-26; 8:45 am]</FRDOC>
+            <BILCOD>BILLING CODE 0099-10-P</BILCOD>
+        </RULE>

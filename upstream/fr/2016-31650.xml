@@ -1,0 +1,310 @@
+<RULE>
+            <PREAMB>
+                <AGENCY TYPE="S">DEPARTMENT OF HEALTH AND HUMAN SERVICES</AGENCY>
+                <SUBAGY>Centers for Medicare &amp; Medicaid Services</SUBAGY>
+                <CFR>42 CFR Parts 431, 433, 438, 440, 457, and 495</CFR>
+                <DEPDOC>[CMS-2390-F3]</DEPDOC>
+                <RIN>RIN-0938-AS25</RIN>
+                <SUBJECT>Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability; Corrections</SUBJECT>
+                <AGY>
+                    <HD SOURCE="HED">AGENCY:</HD>
+                    <P>Centers for Medicare &amp; Medicaid Services (CMS), HHS.</P>
+                </AGY>
+                <ACT>
+                    <HD SOURCE="HED">ACTION:</HD>
+                    <P>Final rule; correcting amendment.</P>
+                </ACT>
+                <SUM>
+                    <HD SOURCE="HED">SUMMARY:</HD>
+                    <P>
+                        This document corrects technical errors that appeared in the final rule published in the May 6, 2016 
+                        <E T="04">Federal Register</E>
+                         (81 FR 27498 through 27901) entitled, “Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability.” The effective date for the rule was July 5, 2016.
+                    </P>
+                </SUM>
+                <EFFDATE>
+                    <HD SOURCE="HED">DATES:</HD>
+                    <P>
+                        <E T="03">Effective Date:</E>
+                         This correcting document is effective December 30, 2016.
+                    </P>
+                    <P>
+                        <E T="03">Applicability Date:</E>
+                         The corrections indicated in this document are applicable beginning immediately.
+                    </P>
+                </EFFDATE>
+                <FURINF>
+                    <HD SOURCE="HED">FOR FURTHER INFORMATION CONTACT:</HD>
+                    <P SOURCE="NPAR">John Giles, (410) 786-1255, Medicaid Managed Care Operations.</P>
+                    <P>Heather Hostetler, (410) 786-4515, Medicaid Managed Care Quality.</P>
+                    <P>Melissa Williams, (410) 786-4435, CHIP.</P>
+                    <P>Nancy Dieter, (410) 786-7219, Third Party Liability.</P>
+                </FURINF>
+            </PREAMB>
+            <SUPLINF>
+                <HD SOURCE="HED">SUPPLEMENTARY INFORMATION:</HD>
+                <HD SOURCE="HD1">I. Background</HD>
+                <P>In FR Doc. 2016-09581 (81 FR 27498 through 27901), the final rule entitled, “Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability” there were technical errors that are identified and corrected in this correcting document. These corrections are applicable immediately.</P>
+                <HD SOURCE="HD1">II. Summary of Errors</HD>
+                <HD SOURCE="HD2">A. Summary of Errors in the Preamble</HD>
+                <P>On page 27560 we made a technical error in the response to comments of § 438.6(e). In this response, we inadvertently identified the effective date and the date by which we would enforce compliance for the regulation, which is correctly identified in the Compliance section on page 27499.</P>
+                <P>On page 27679 we made a technical error in the preamble text of § 438.330 (Quality Assessment and Performance Improvement Program) in a response to comment. We stated, “Note that standards for risk adjustment are provided in §§ 438.5(g) and 438.7(b)(5).” We inadvertently omitted the words “for payment purposes” after “risk adjustment” in this sentence to clarify that these cross-referenced sections are related to risk adjustment for payment purposes.</P>
+                <P>On page 27708 we made a technical error in the preamble text of § 438.358 (Activities Related to External Quality Review) in a response to comment about § 438.358(b)(iv) (Validation of MCO, PIHP, or PAHP validation of network adequacy). We inadvertently included PIHPs and PAHPs in a statement about the match rate for this EQR-related activity for MCOs. We stated, “. . . the validation of MCOs, PIHPs, and PAHPs would be eligible for the 75 percent match rate under § 438.370(a).” This was in error, as it conflicts with § 438.370 of the final rule and the preamble discussion of that section on pages 27715 through 27717.</P>
+                <P>On page 27712 we made a technical error in the preamble text of § 438.360 (Nonduplication of mandatory activities with Medicare or accreditation review) in a response to comment about updating the EQR protocols to incorporate data from a Medicare or private accrediting entity review. We referenced three of the mandatory EQR-related activities using the citation from the proposed rule (§ 438.358(b)(1) to (b)(3)), rather than the citation from the final rule (§ 438.358(b)(1)(i) to (b)(1)(iii)).</P>
+                <P>On page 27738 we made a technical error in the response to comments of § 438.242(b)(2). In this response, we inadvertently mistyped “T-MSIS.”</P>
+                <P>
+                    On page 27766 we made a technical error in the preamble text of § 457.1233. We inadvertently did not note that CHIP is also adopting the changes discussed in the Medicaid preamble to include PCCM entities as subject to § 438.230 in 
+                    <PRTPAGE P="38"/>
+                    response to public comments and consideration of a managed care plan's subcontracted or delegated obligations, services, or activities.
+                </P>
+                <HD SOURCE="HD2">B. Summary of Errors in Regulation Text</HD>
+                <P>On page 27860 we made a technical error in the regulation text of § 438.6(c)(2)(i). In this paragraph, we inadvertently omitted “actuarial” before “principles and practices.”</P>
+                <P>On page 27862 we made a technical error in the regulation text of § 438.8(e)(1). In this paragraph, we inadvertently referenced fraud reduction activities instead of fraud prevention activities.</P>
+                <P>On page 27863 we made a technical error in the regulation text of § 438.8(f)(2)(i). In this paragraph, we inadvertently included an extra word “to.”</P>
+                <P>On page 27867 we made a technical error in the regulation text of § 438.10(g)(2)(xiii). In this paragraph, we inadvertently included an extra word “in.”</P>
+                <P>On page 27879 we made a technical error in the regulation text of § 438.210(a)(2). In this paragraph, we inadvertently referenced part 440 instead of part 441.</P>
+                <P>On page 27884 we made a technical error in the regulation text of § 438.350(d). We incorrectly cross-referenced § 438.364(a)(1)(i) through (iv) instead of § 438.364(a)(2)(i) through (iv).</P>
+                <P>On page 27885 we made a technical error in the regulation text of § 438.358(a)(2) (Activities related to external quality review). We incorrectly cross-referenced § 438.364(a)(i) through (iv) instead of § 438.364(a)(2)(i) through (iv).</P>
+                <P>On page 27885 we made a technical error in the regulation text of § 438.358(c)(3) (Activities related to external quality review). We incorrectly cross-referenced § 438.358(b)(2) instead of § 438.358(b)(1)(ii).</P>
+                <P>On page 27885 we made a technical error in the regulation text of § 438.358(c)(4) (Activities related to external quality review). We incorrectly cross-referenced § 438.358(b)(1) instead of § 438.358(b)(1)(i).</P>
+                <P>On page 27891 we made a technical error in the regulation text of § 438.604(a)(2). In this paragraph, we inadvertently referenced § 438.3 instead of § 438.4.</P>
+                <P>On page 27898 we made a technical error in the regulation text of § 457.1201(l). In this paragraph, we inadvertently cross-referenced the Medicaid requirements related to MHPAEA at § 438.3(n) instead of CHIP MHPAEA requirements at § 457.496. Both the Medicaid and CHIP MHPAEA provisions were issued on March 30, 2016, at 81 FR 18390, 18436 and 18442. They are parallel provisions and the change in the cross-reference will not result in any substantive change in the applicable requirements.</P>
+                <P>On page 27898 we made a technical error in the regulation text of § 457.1201(n)(2). In this paragraph, we inadvertently omitted a cross-reference to § 438.330(b)(2) as we discussed in the preamble on page 27757.</P>
+                <P>On page 27898 we made a technical error in the regulation text of § 457.1203(a). In this paragraph, we inadvertently included a parenthesis before the word “implementing.”</P>
+                <P>On page 27898 we made a technical error in the regulation text of § 457.1203(e). In this paragraph, we inadvertently did not include a comma after the word “MCOs” and we inadvertently included the word “to” after the word “under.”</P>
+                <P>On page 27899 we made a technical error in the regulation text of § 457.1210(c)(2) and § 457.1210(c)(4). In this paragraph, we incorrectly used the word “Explains” instead of the word “Explain.”</P>
+                <P>On page 27899 we made a technical error in the regulation text of § 457.1214. In this section, we referenced § 438.58, the conflict of interest safeguards required for Medicaid managed care plans. However, we inadvertently did not specify that references to § 438.54(b) (relating to the Medicaid managed care enrollment processes) in § 438.58 should refer to the enrollment processes for CHIP described in § 457.1210(a).</P>
+                <P>On page 27899 we made a technical error in the regulation text of § 457.1228. We inadvertently omitted the words “and poststabilization care” before the word “services.” Additionally, we are replacing the cross-reference to § 457.10 with a cross reference to § 438.114 to reflect the intended alignment with Medicaid definitions that was clearly expressed in the preamble on page 27764 in discussing § 457.1228. In that preamble discussion, we expressly indicated that we would be adopting the definitions at § 438.114.</P>
+                <P>On page 27899 we made a technical error in the regulation text of § 457.1230(c). We inadvertently did not provide that the applicability date for the Medicaid requirements in § 438.208(d) does not apply to CHIP.</P>
+                <P>On page 27899 we made a technical error in the regulation text of § 457.1230(d). We inadvertently did not provide the applicability date for the Medicaid requirements in § 438.210(f) does not apply to CHIP.</P>
+                <P>On page 27900 we made a technical error in the regulation text of § 457.1233(b). As indicated in the preamble on page 27766, we intended to align the structure and operation standards for CHIP managed care entities with parallel Medicaid standards, but we inadvertently omitted PCCM entities from the list of managed care entities that the state must ensure are in compliance with § 438.230.</P>
+                <P>On page 27900 we made technical errors in the regulation text of § 457.1240(e). We inadvertently left in an obsolete cross reference from the proposed rule to § 438.340(e).</P>
+                <P>On page 27900 we made technical errors in the regulation text of § 457.1240(f). In this paragraph, we incorrectly spelled “PCCM entities” as “PPCM entities.”</P>
+                <P>On page 27900 we made technical errors in the regulation text of § 457.1250(a), relating to external quality review. We inadvertently did not provide that while the terms of Medicaid external quality review provisions at § 438.350 applies to PCCM entities, § 438.362, which is cross-referenced in § 438.350, does not apply to PCCM entities in CHIP.</P>
+                <P>On page 27900 we made technical errors in the regulation text of § 457.1260. We inadvertently did not include an exception to the Medicaid applicability date as described in § 438.400(c).</P>
+                <HD SOURCE="HD1">III. Waiver of Proposed Rulemaking and Delay in Effective Date</HD>
+                <P>
+                    Under 5 U.S.C. 553(b) of the Administrative Procedure Act (APA), the agency is required to publish a notice of the proposed rule in the 
+                    <E T="04">Federal Register</E>
+                     before the provisions of a rule take effect. In addition, section 553(d) of the APA mandates a 30-day delay in effective date after issuance or publication of a rule. Sections 553(b)(B) and 553(d)(3) of the APA provide for exceptions from the APA notice and comment, and delay in effective date requirements. Section 553(b)(B) of the APA authorizes an agency to dispense with normal notice and comment rulemaking procedures for good cause if the agency makes a finding that the notice and comment process is impracticable, unnecessary, or contrary to the public interest; and includes a statement of the finding and the reasons for it in the notice.
+                </P>
+                <P>
+                    In our view, this correcting document does not constitute a rulemaking that would be subject to these requirements. This document merely corrects technical errors in the Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed 
+                    <PRTPAGE P="39"/>
+                    Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability final rule. The corrections contained in this document are consistent with, and do not make substantive changes to, the policies and payment methodologies that were adopted subject to notice and comment procedures in the Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability final rule. As a result, the corrections made through this correcting document are intended to ensure that the Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability final rule accurately reflects the policies adopted in that rule.
+                </P>
+                <P>Even if this were a rulemaking to which the notice and comment and delayed effective date requirements applied, we find that there is good cause to waive such requirements. Undertaking further notice and comment procedures to incorporate the corrections in this document into the Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability final rule or delaying the effective date of the corrections would be contrary to the public interest because it could result in a period of confusion about the applicability of the rules while those procedures are pending. Further, such procedures would be unnecessary, because the corrections in this document do not make substantive changes in the underlying policies but are limited to elimination of typographical errors, incorrect cross references, confusing or inconsistent language, and obvious errors. This correcting document is intended solely to ensure that the Medicaid and Children's Health Insurance Program (CHIP) Programs; Medicaid Managed Care, CHIP Delivered in Managed Care, and Revisions Related to Third Party Liability final rule accurately reflects the final policy determinations that were set forth in the overall rulemaking record. For these reasons, we believe there is good cause to waive the requirements for notice and comment and delay in effective date.</P>
+                <HD SOURCE="HD1">Corrections of Errors</HD>
+                <P>In FR Doc. 2016-09581 of May 6, 2016 (81 FR 27498), make the following corrections:</P>
+                <P>1. On page 27560, in the first column; in the second full paragraph, line 13, the phrase “for contracts starting on or after July 1, 2017” is corrected to read “no later than the effective date of this rule”.</P>
+                <P>2. On page 27679, in the third column; in the first full paragraph, line eight, the phrase “Note that standards for risk adjustment . . . .” is corrected to read “Note that standards for risk adjustment for paymentpurposes. . . .”.</P>
+                <P>3. On page 27708, in the second column; in the first full paragraph, beginning at line seven, the phrase “validation of MCOs, PIHPs, and PAHPs” is corrected to read “validation of MCOs”.</P>
+                <P>4. On page 27712, in the second column; in the fourth full paragraph, line 20, the phrase “§ 438.358(b)(1) to (b)(3)” is corrected to read “§ 438.358(b)(1)(i) to (b)(1)(iii)”.</P>
+                <P>5. On page 27738, in the third column; in the fifth full paragraph, line 11, the term “TSIS” is corrected to read “T-MSIS”.</P>
+                <P>6. On page 27766, in the second column; in the second full paragraph, beginning with line one, the sentence “After consideration of the public comments, we are adding a cross reference to § 457.1110 in a new paragraph (e), and otherwise finalizing § 457.1233 as proposed.” is corrected to read “After consideration of the public comments, we are adding a cross reference to § 457.1110 in a new paragraph (e) and adopting the changes to § 438.230 to include PCCM entities as discussed in the Medicaid preamble above. The remaining provisions of § 457.1233 are finalized as proposed.”.</P>
+                <LSTSUB>
+                    <HD SOURCE="HED">List of Subjects</HD>
+                    <CFR>42 CFR Part 438</CFR>
+                    <P>Grant programs-health, Medicaid, Reporting and recordkeeping requirements.</P>
+                    <CFR>42 CFR Part 457</CFR>
+                    <P>Administrative practice and procedure, Grant programs-health, Health insurance, Reporting and recordkeeping requirements.</P>
+                </LSTSUB>
+                <P>Accordingly, 42 CFR chapter IV is corrected by making the following correcting amendments to parts 438 and 457:</P>
+                <PART>
+                    <HD SOURCE="HED">PART 438—MANAGED CARE</HD>
+                </PART>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>1. The authority citation for part 438 continues to read as follows:</AMDPAR>
+                    <AUTH>
+                        <HD SOURCE="HED">Authority:</HD>
+                        <P> Sec. 1102 of the Social Security Act (42 U.S.C. 1302).</P>
+                    </AUTH>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.6 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>2. In § 438.6 amend paragraph (c)(2)(i) by removing the phrase “accepted principles and practices” and adding in its place the phrase “accepted actuarial principles and practices”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.8 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>3. In § 438.8—</AMDPAR>
+                    <AMDPAR>a. Amend paragraph (e)(1) by removing the phrase “fraud reduction activities” and adding in its place the phrase “fraud prevention activities”.</AMDPAR>
+                    <AMDPAR>b. Amend paragraph (f)(2)(i) by removing the phrase “under to § 438.6(d).” and adding in its place the phrase “under § 438.6(d).”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.10 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>4. In § 438.10 amend paragraph (g)(2)(xiii) by removing the phrase “in in alternative formats or languages.” and adding in its place the phrase “in alternative formats or languages.”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.210 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>5. In § 438.210 amend paragraph (a)(2) by removing the phrase “of part 440” and adding in its place “of part 441”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.350 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>6. In § 438.350 amend paragraph (d) by removing the reference “§ 438.364(a)(1)(i) through (iv).” and adding in its place the reference “§ 438.364(a)(2)(i) through (iv).”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.358 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>7. In § 438.358 amend paragraph (a)(2) by removing the reference “§ 438.364(a)(i) through (iv).” and adding in its place the reference “§ 438.364(a)(2)(i) through (iv).”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.358</SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>8. In § 438.358 amend paragraph (c)(3) by removing the reference “§ 438.358(b)(2)” and adding in its place the reference “§ 438.358(b)(1)(ii)”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.358</SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>9. In § 438.358 amend paragraph (c)(4) by removing the reference “§ 438.358(b)(1)” and adding in its place the reference “§ 438.358(b)(1)(i)”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 438.604 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="438">
+                    <AMDPAR>10. In § 438.604 amend paragraph (a)(2) by removing the reference “§ 438.3” and adding in its place the reference “§ 438.4”.</AMDPAR>
+                </REGTEXT>
+                <PART>
+                    <HD SOURCE="HED">PART 457—ALLOTMENTS AND GRANTS TO STATES</HD>
+                </PART>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>11. The authority citation for part 457 continues to read as follows:</AMDPAR>
+                    <AUTH>
+                        <HD SOURCE="HED">Authority:</HD>
+                        <P> Sec. 1102 of the Social Security Act (42 U.S.C. 1302).</P>
+                    </AUTH>
+                </REGTEXT>
+                <SECTION>
+                    <PRTPAGE P="40"/>
+                    <SECTNO>§ 457.1201 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>12. In § 457.1201—</AMDPAR>
+                    <AMDPAR>a. Amend paragraph (l) by removing the reference “§ 438.3(n).” and adding in its place the reference “§ 457.496.”.</AMDPAR>
+                    <AMDPAR>b. Amend paragraph (n)(2) by removing the phrase “(cross-referencing § 438.330(b)(3), (c),” and adding in its place the phrase “(cross-referencing § 438.330(b)(2), (b)(3), (c),”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 457.1203 </SECTNO>
+                    <SUBJECT>[Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>13. In § 457.1203—</AMDPAR>
+                    <AMDPAR>a. Amend paragraph (a) by removing the open parenthesis “(” before the word “implementing”.</AMDPAR>
+                    <AMDPAR>b. Amend paragraph (e) by adding a comma “,” after the term “MCOs” and by removing the word “to” after the word “under”.</AMDPAR>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 457.1210 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>14. In § 457.1210—</AMDPAR>
+                    <AMDPAR>a. Amend paragraph (c)(2) by removing the word “Explains” and adding in its place the word “Explain”.</AMDPAR>
+                    <AMDPAR>b. Amend paragraph (c)(4) by removing the word “Explains” and adding in its place the word “Explain”.</AMDPAR>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>15. Section 457.1214 is revised to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1214 </SECTNO>
+                        <SUBJECT>Conflict of interest safeguards.</SUBJECT>
+                        <P>The State must have in effect safeguards against conflict of interest in accordance with the terms of § 438.58 of this chapter, except that references to § 438.54(b) should be read to refer to the enrollment processes described in § 457.1210(a).</P>
+                    </SECTION>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>16. Section 457.1228 is revised to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1228 </SECTNO>
+                        <SUBJECT>Emergency and poststabilization services.</SUBJECT>
+                        <P>The State must ensure that emergency and poststabilization care services are available and accessible to enrollees in accordance with the terms of § 438.114 of this chapter.</P>
+                    </SECTION>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>17. Section 457.1230 is amended by revising paragraphs (c) and (d) to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1230 </SECTNO>
+                        <SUBJECT>Access Standards</SUBJECT>
+                        <STARS/>
+                        <P>
+                            (c) 
+                            <E T="03">Coordination and continuity of care.</E>
+                             The State must ensure, through its contracts, that each MCO, PIHP and PAHP complies with the coordination and continuity of care requirements in accordance with the terms of § 438.208 of this chapter, except that the applicability date in § 438.208(d) does not apply.
+                        </P>
+                        <P>
+                            (d) 
+                            <E T="03">Coverage and authorization of services.</E>
+                             The State must ensure, through its contracts, that each MCO, PIHP or PAHP complies with the coverage and authorization of services requirements in accordance with the terms of § 438.210 of this chapter, except that the following do not apply: § 438.210(a)(5) of this chapter (related to medical necessity standard); § 438.210(b)(2)(iii) of this chapter (related to authorizing LTSS), and § 438.210(f) (relating to the applicability date).
+                        </P>
+                    </SECTION>
+                </REGTEXT>
+                <SECTION>
+                    <SECTNO>§ 457.1233 </SECTNO>
+                    <SUBJECT> [Amended]</SUBJECT>
+                </SECTION>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>18. In § 457.1233 amend paragraph (b) by removing the phrase “and PAHP” and adding in its place the term “PAHP, and PCCM”.</AMDPAR>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>19. Section 457.1240 is amended by revising paragraph (e) and correcting the heading for paragraph (f) to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1240 </SECTNO>
+                        <SUBJECT>Quality measurement and improvement.</SUBJECT>
+                        <STARS/>
+                        <P>
+                            (e) 
+                            <E T="03">Managed care quality strategy.</E>
+                             The State must draft and implement a written quality strategy for assessing and improving the quality of health care and services furnished CHIP enrollees as described in § 438.340 of this chapter.
+                        </P>
+                        <P>
+                            (f) 
+                            <E T="03">Applicability to PCCM entities.</E>
+                             * * *
+                        </P>
+                    </SECTION>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>20. Section 457.1250 is amended by revising paragraph (a) to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1250 </SECTNO>
+                        <SUBJECT>External quality review.</SUBJECT>
+                        <P>(a) Each State that contracts with MCOs, PIHPs, or PAHPs must follow all applicable external quality review requirements as set forth in §§ 438.350 (except for references to §§ 438.362), 438.352, 438.354, 438.356, 438.358, 438.360 (only with respect to nonduplication of EQR activities with private accreditation) and § 438.364 of this chapter. In the case of a contract with a PCCM entity described in § 457.1240(f), § 438.350 (except for references to § 438.362) of this chapter applies.</P>
+                        <STARS/>
+                    </SECTION>
+                </REGTEXT>
+                <REGTEXT TITLE="42" PART="457">
+                    <AMDPAR>21. Section 457.1260 is revised by adding a sentence at the end of the section to read as follows:</AMDPAR>
+                    <SECTION>
+                        <SECTNO>§ 457.1260 </SECTNO>
+                        <SUBJECT>Grievance system.</SUBJECT>
+                        <P>* * * The applicability date in § 438.400(c) does not apply to CHIP.</P>
+                    </SECTION>
+                </REGTEXT>
+                <SIG>
+                    <DATED>Dated: December 21, 2016.</DATED>
+                    <NAME>Wilma M. Robinson,</NAME>
+                    <TITLE>Deputy Executive Secretary to the Department, Department of Health and Human Services.</TITLE>
+                </SIG>
+            </SUPLINF>
+            <FRDOC>[FR Doc. 2016-31650 Filed 12-30-16; 8:45 am]</FRDOC>
+            <BILCOD> BILLING CODE 4120-01-P</BILCOD>
+        </RULE>
