@@ -167,7 +167,9 @@ def main() -> None:
     if args.readme is not None:
         # Render before writing so a malformed README is never touched.
         rendered = render_readme(metrics, args.readme)
-        (args.out or args.readme).write_text(rendered, encoding="utf-8")
+        target = args.out or args.readme
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(rendered, encoding="utf-8")
         return
 
     text = render(metrics)

@@ -164,6 +164,21 @@ class ReadmeTests(unittest.TestCase):
                 text = demo.render_readme({"dates": 2}, readme)
         self.assertEqual(text, f"Intro.\n\n{demo.EVIDENCE_START}\n\nNEW\n\n{demo.EVIDENCE_END}\n\nTail.\n")
 
+    def test_readme_with_out_creates_the_folder_and_leaves_the_readme(self) -> None:
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            readme = root / "README.md"
+            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\n{demo.EVIDENCE_END}\n"
+            readme.write_text(original, encoding="utf-8")
+            metrics = root / "metrics.json"
+            metrics.write_text(json.dumps({"dates": 2}), encoding="utf-8")
+            out = root / "new" / "folder" / "README.md"
+            argv = ["demo.py", "--metrics", str(metrics), "--readme", str(readme), "--out", str(out)]
+            with mock.patch.object(sys, "argv", argv), mock.patch.object(demo, "render", return_value="NEW\n"):
+                demo.main()
+            self.assertIn("\nNEW\n", out.read_text(encoding="utf-8"))
+            self.assertEqual(readme.read_text(encoding="utf-8"), original)
+
     def test_render_readme_without_markers_exits(self) -> None:
         with TemporaryDirectory() as tmp:
             readme = Path(tmp) / "README.md"
