@@ -41,6 +41,15 @@ class LabelTests(unittest.TestCase):
         )
         self.assertEqual(labels[2], ("(b)(1)", "(1) One."))
 
+    def test_lowercase_labels_run_from_z_into_aa(self) -> None:
+        letters = "abcdefghijklmnopqrstuvwxyz"
+        body = "".join(f"<P>({letter}) Item {letter}.</P>" for letter in letters)
+        labels = _labels(f"<DIV8>{body}<P>(aa) Twenty-seventh.</P><P>(1) Its first.</P><P>(bb) Next.</P></DIV8>")
+        self.assertEqual(
+            [label for label, _ in labels], [f"({letter})" for letter in letters] + ["(aa)", "(aa)(1)", "(bb)"]
+        )
+        self.assertEqual(labels[26], ("(aa)", "(aa) Twenty-seventh."))
+
     def test_chained_markers(self) -> None:
         labels = _labels(
             """

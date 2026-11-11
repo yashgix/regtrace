@@ -95,6 +95,22 @@ class InstructionTests(unittest.TestCase):
         self.assertEqual(found[0].sections, ("438.68", "438.70"))
         self.assertEqual(found[1].sections, ("438.2",))
 
+    def test_the_current_instruction_carries_across_regtext_blocks(self) -> None:
+        xml = (
+            '<ROOT><REGTEXT TITLE="42" PART="438">'
+            "<AMDPAR>6. Amend \u00a7 438.2 by revising paragraph (a).</AMDPAR></REGTEXT>"
+            '<REGTEXT TITLE="42" PART="438">'
+            "<AMDPAR>b. Revise paragraph (c) of the following section:</AMDPAR>"
+            "<SECTNO>\u00a7 438.10</SECTNO></REGTEXT></ROOT>"
+        )
+        found = _instructions(xml)
+        self.assertEqual([item.number for item in found], [6])
+        self.assertEqual(
+            found[0].text,
+            "6. Amend \u00a7 438.2 by revising paragraph (a). b. Revise paragraph (c) of the following section:",
+        )
+        self.assertEqual(found[0].sections, ("438.2", "438.10"))
+
     def test_ranges_expand_against_known_versions(self) -> None:
         found = _instructions(_wrap("<AMDPAR>5. Amend \u00a7\u00a7 438.2 through 438.10.</AMDPAR>"))
         self.assertEqual(found[0].sections, ("438.2", "438.3", "438.4", "438.6", "438.10"))
