@@ -18,28 +18,28 @@ Pinned upstream eCFR XML and versions JSON plus Federal Register document JSON a
 
 ## Trade-offs
 
-eCFR is an editorial compilation, not the official legal edition. Federal Register CFR tagging may miss documents, so the unexplained list is evidence rather than proof of error. A rule's own applicability dates inside regulation text are not parsed yet. Only federal rules are covered, not state letters. Milestone 1 has no LLM, Postgres or React viewer. The label parser follows explicit rules, but the review says two specified behaviors still lack direct regression tests. The baseline has higher recall but much lower precision than the parser.
+eCFR is an editorial compilation, not the official legal edition. Federal Register CFR tagging may miss documents, so the unexplained list is evidence rather than proof of error. A rule's own applicability dates inside regulation text are not parsed yet. Only federal rules are covered, not state letters. Milestone 1 has no LLM, Postgres or React viewer. The parser-versus-baseline numbers measure agreement with eCFR's own version history, not verified amendment ground truth, so they compare how well each set of predicted sections lines up with eCFR's changes; they do not show which one finds amendments correctly.
 
 ## Results
 
-The acceptance suite passed 42/42 and the project's own suite passed 149/149. The independent review says both earlier blocking findings were fixed and found no new behavioral defect; it still returned changes because instruction carry-over across REGTEXT blocks and label progression past z to aa lack direct regression tests. Measured metrics include 38 dates, 45 documents and 26 rules; parser precision 0.955056 and recall 0.89441; baseline precision 0.431298 and recall 0.913043; citation self-valid 1.0 and perturbed rejected 1.0. Other counts include 74 matched, 11 shifted, 7 before history, 4 unmatched, 17 unexplained, 2,281 latest paragraphs and 732 paragraph changes.
+The numbers live in one place: the README's generated results block, rendered by `python demo.py --readme README.md` from `results/metrics.json`, which the runner measures after the final review and checks against every claim. They cover the snapshot's shape, the reconciliation tallies (matched, shifted, before history, unmatched, unexplained), the citation self-checks, and precision and recall for the parser and for a baseline that cites every `438.N` it sees. Precision and recall here mean agreement with eCFR's own version history: whether a rule's predicted sections show a substantive eCFR change near its dates, and how many substantive changes no rule claims. They are not checked against verified amendments.
 
 ## Limitations
 
-The tool is not a legal edition and does not replace the official CFR. It can only reconcile documents that the Federal Register tagging surfaces; missed tagging shows up as unexplained changes. It does not yet parse applicability dates written inside regulation text. It covers federal rules only, not DHCS All Plan Letters or other state guidance. It does not include the React viewer, an LLM layer or Postgres. The review verdict is changes, so two parser regression tests should be added before calling the test coverage complete.
+The tool is not a legal edition and does not replace the official CFR. It can only reconcile documents that the Federal Register tagging surfaces; missed tagging shows up as unexplained changes. It does not yet parse applicability dates written inside regulation text. It covers federal rules only, not DHCS All Plan Letters or other state guidance. It does not include the React viewer, an LLM layer or Postgres. Precision and recall are agreement with eCFR's version history, not accuracy against verified amendments.
 
 ## What I learned
 
-Traceability is mostly a data-model and edge-case problem: CFR paragraph labels are ambiguous and date matching needs care. A pinned, checksummed snapshot makes results reproducible. Unexplained changes are useful evidence, not just errors. Independent review can find missing tests even when behavior is correct. A deterministic ground truth is a good base before LLM-made compliance flags. The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model.
+Traceability is mostly a data-model and edge-case problem: CFR paragraph labels are ambiguous and date matching needs care. A pinned, checksummed snapshot makes results reproducible. Unexplained changes are useful evidence, not just errors. Independent review finds missing tests even when the behavior is right. A deterministic ground truth is a good base before LLM-made compliance flags. The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model.
 
 ## Talking points
 
 - The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model; it was not hand-written by Yash.
-- Every reported number comes from pinned public federal data and code that can be rerun; nothing is typed into the README by hand.
-- The parser is much more precise than the baseline: 0.955056 versus 0.431298, while baseline recall is higher: 0.913043 versus 0.89441.
-- Citation checks are strong on this data: 1.0 self-valid and 1.0 perturbed rejected.
+- Every reported number comes from pinned public federal data and code that can be rerun; nothing is typed into the README or these notes by hand.
+- The parser and the baseline are compared on agreement with eCFR's version history, read from the README's generated table: that shows how their predicted sections line up with eCFR's changes, not which one is right about amendments.
+- The citation verifier is checked both ways: a section's own text must verify, and the same quote with its last word changed must not.
 - The unexplained list is the honest edge of the method: it shows where Federal Register tagging and eCFR versions do not line up.
-- The independent review returned changes only for missing regression tests, not for a new behavioral defect.
+- The specified edge cases have direct regression tests, including an instruction that carries across REGTEXT blocks and labels that run from (z) to (aa).
 - This maps directly to Readily's need for flags tied to exact rule text: it builds the checkable federal ground truth first.
 - Next steps in the spec are a React viewer, DHCS All Plan Letters, and LLM compliance flags checked against this ground truth.
 
@@ -47,7 +47,7 @@ Traceability is mostly a data-model and edge-case problem: CFR paragraph labels 
 
 **How do you know the paragraph labels are right?**
 
-The labels follow explicit specification rules and are covered by tests. The independent review found no behavioral defect, but it did flag two specified cases that need direct regression tests.
+The labels follow explicit specification rules, and each rule has a test, including the specified progression from (z) to (aa).
 
 **Why not use an LLM for this?**
 
@@ -65,9 +65,9 @@ The pinned data is only a few MB, so Postgres adds operational cost without help
 
 eCFR is editorial, Federal Register tagging can miss documents, applicability dates inside rule text are not parsed, and state guidance is not covered yet.
 
-**Why is parser recall lower than the baseline?**
+**How should the parser and baseline numbers be read?**
 
-The baseline predicts every section number that appears anywhere in a document, which is broad. The parser is narrower and more precise, so it misses more but produces fewer false sections.
+As agreement with eCFR's version history only. The baseline predicts every section number that appears anywhere in a document, so it claims more sections; the parser claims only sections its amendatory instructions name. The generated table shows how often each one's sections line up with a substantive eCFR change, and how many eCFR changes each leaves unclaimed. Without verified amendment ground truth, that says how they agree with eCFR, not which one is correct.
 
 **How would this fit Readily's product?**
 
