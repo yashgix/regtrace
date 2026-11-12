@@ -108,6 +108,19 @@ class ValueObjectTests(unittest.TestCase):
         other = Verdict("other_date", found_dates=("2023-01-01", "2024-01-01"))
         self.assertEqual(other.found_dates, ("2023-01-01", "2024-01-01"))
 
+    def test_every_value_type_is_frozen(self) -> None:
+        cases = [
+            (Version("438.68", "2024-01-01", True), "date", "2024-01-02"),
+            (Document("2024-0001", "Rule", "Final rule", "Title", "2024-01-01", None, True), "has_text", False),
+            (Change("438.2", "(a)", "revised", "old", "new"), "new_text", "other"),
+            (Instruction("2024-0001", 2, "Amend \u00a7 438.2.", ("438.2",)), "number", 3),
+            (Row("2024-0001", "438.2", "unmatched", None), "status", "matched"),
+            (Verdict("valid"), "status", "wrong_paragraph"),
+        ]
+        for value, field, replacement in cases:
+            with self.subTest(type=type(value).__name__), self.assertRaises(FrozenInstanceError):
+                setattr(value, field, replacement)
+
 
 if __name__ == "__main__":
     unittest.main()
