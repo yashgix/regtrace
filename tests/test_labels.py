@@ -317,6 +317,25 @@ class LabelTests(unittest.TestCase):
         )
         self.assertEqual(len({label for label, _ in labels}), len(labels))
 
+    def test_italic_with_a_child_element_does_not_open_a_definition(self) -> None:
+        labels = _labels(
+            """
+            <DIV8>
+              <P>(a) Standard.</P>
+              <P><I>Health <E T="03">plan</E></I> means a plan.</P>
+              <P><I>Abuse</I> means harm.</P>
+            </DIV8>
+            """
+        )
+        self.assertEqual(
+            labels,
+            [
+                ("(a)", "(a) Standard."),
+                ("(a)~1", "Health plan means a plan."),
+                ("(a)def:Abuse", "Abuse means harm."),
+            ],
+        )
+
     def test_invalid_marker_is_text(self) -> None:
         labels = _labels(
             """
