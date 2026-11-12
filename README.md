@@ -6,20 +6,21 @@ point-in-time eCFR.
 regtrace is a small deterministic Python library with a read-only JSON API. For every Federal Register
 document tagged to Part 438 since 2016 it answers:
 
-- Which sections did the document amend? Amendatory instructions are parsed from the document XML.
+- Which sections did the document amend? Amendatory instructions are parsed from the document's
+  `REGTEXT` blocks.
 - Did the eCFR record a substantive change on the rule's effective date (`matched`), near it (`shifted`),
   before eCFR history (`before_history`), or not at all (`unmatched`)?
-- Which substantive eCFR section versions are not explained by any tagged Rule?
+- Which substantive eCFR section versions does no Rule's parsed instruction claim?
 - Is a quoted citation actually in force for a section, label and date?
 
-This is the checkable public-law half of regulatory change management. It is not legal advice and it does
+This is a checkable public-law piece of regulatory change management. It is not legal advice and it does
 not decide whether a health plan is compliant.
 
 ## Why it matters
 
-Medi-Cal plans and their vendors have to turn a stream of federal and state changes into policy edits,
-owner assignments and audit evidence. The hard part is not fetching a PDF; it is keeping the chain from
-rule text to policy change defensible months later.
+Medi-Cal plans and their vendors turn federal and state changes into policy edits, owner assignments
+and audit evidence. Part of that work can be checked mechanically: which rule text changed, when the
+change appears in the eCFR, and whether a quoted citation was in force on a date.
 
 Readily describes its product as an AI-native compliance intelligence platform for healthcare:
 
@@ -45,7 +46,7 @@ Source: <https://www.readily.ai/>
 
 regtrace is independent and unaffiliated. It uses public federal data only and makes no claim about
 Readily's customers, data, accuracy or internal implementation. What it demonstrates is the evidence
-layer such work needs: point-in-time text, explicit matching rules, a list of changes nobody explains,
+layer such work needs: point-in-time text, explicit matching rules, a list of changes no parsed instruction claims,
 and a citation verifier that fails closed.
 
 ## How it works
@@ -58,9 +59,9 @@ Four separable jobs, one module each:
 4. `regtrace/reconcile.py` and `regtrace/cite.py` reconcile those claims against eCFR section versions and
    verify quoted citations.
 
-Keeping the jobs separate is what makes the unexplained list meaningful: a parser bug shows up as a label
-anomaly, a reconciliation miss as an unexplained `(section, date)`, a citation miss as a failed substring
-check. The design notes are in `docs/DESIGN.md`.
+Keeping the jobs separate makes each kind of gap easier to trace: a labeling problem tends to show up as
+an unlabeled paragraph, a missing claim as an unexplained `(section, date)`, a citation miss as a failed
+substring check. The design notes are in `docs/DESIGN.md`.
 
 ## Data in this repository
 
@@ -122,6 +123,15 @@ Two of the tables are the point of the project. **Unexplained changes** lists ev
 eCFR date and status. Change the snapshot, re-run `python demo.py --readme README.md`, and both
 tables change with it.
 
+**How to read precision and recall.** They measure agreement with eCFR's own version history on this
+one pinned snapshot: precision is the share of a method's predicted rows that show a substantive eCFR
+change near the rule's dates, and recall is the share of substantive eCFR changes that some row claims.
+They are not checked against independently verified amendments, so they are not accuracy, and running
+the experiment twice shows only that they are deterministic. The parser predicts the sections its
+amendatory instructions name; the baseline predicts every `438.N` that appears anywhere in the
+document's XML. The two scores differ because those prediction sets differ; these numbers do not show
+whether any predicted section was actually amended.
+
 <!-- regtrace:evidence:start -->
 
 _This block is generated, never typed. It stays between the two markers so `python demo.py --readme
@@ -168,8 +178,10 @@ All responses are JSON; dates are `YYYY-MM-DD`.
 - The eCFR is an editorial compilation, not the official legal edition. The official edition is the
   Federal Register and the Code of Federal Regulations as published by the Office of the Federal
   Register.
-- The Federal Register's CFR tagging can miss documents. The unexplained list is the evidence of that,
-  not a claim that eCFR is wrong.
+- The Federal Register's CFR tagging can miss documents, and the parser reads amendatory instructions
+  only inside `REGTEXT`, so a tagged document that states its change elsewhere (some CFR corrections do)
+  is not claimed either. The unexplained list is the evidence for both: it lists changes no parsed
+  instruction claims. It is not a count of untagged amendments and not a claim that eCFR is wrong.
 - A rule's own applicability dates inside the regulatory text are not parsed yet. The reconciliation uses
   the document's effective date, or publication date when no effective date is present.
 - Only federal rules are covered. State Medicaid guidance, including DHCS All Plan Letters, is out of

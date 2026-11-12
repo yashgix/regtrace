@@ -52,7 +52,10 @@ def _unexplained_table(unexplained: list[tuple[str, str]]) -> str:
     for section_id, day in unexplained:
         section = parts[day].sections.get(section_id)
         heading = section.heading if section is not None else ""
-        next_check = f"Check Federal Register documents around {day} for an untagged § {section_id} amendment."
+        next_check = (
+            f"No parsed instruction claims it. Check Federal Register documents around {day} for § {section_id}, "
+            "including corrections written outside REGTEXT and documents the CFR tagging missed."
+        )
         rows.append((section_id, day, _short(heading, 80), next_check))
     return "### Unexplained changes\n\n" + _table(("section", "date", "heading", "next check"), rows)
 

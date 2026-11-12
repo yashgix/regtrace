@@ -64,7 +64,11 @@ class UnexplainedTableTests(unittest.TestCase):
         with mock.patch.object(demo, "load_part", return_value=part):
             text = demo._unexplained_table([("438.2", "2021-01-01")])
         self.assertIn("| 438.2 | 2021-01-01 | § 438.2 Network \\| adequacy. |", text)
-        self.assertIn("Check Federal Register documents around 2021-01-01 for an untagged § 438.2 amendment.", text)
+        self.assertIn(
+            "No parsed instruction claims it. Check Federal Register documents around 2021-01-01 for § 438.2, "
+            "including corrections written outside REGTEXT and documents the CFR tagging missed.",
+            text,
+        )
 
     def test_missing_section_renders_an_empty_heading(self) -> None:
         part = _part("2021-01-01", _section("438.2"))

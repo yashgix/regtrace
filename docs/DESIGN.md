@@ -3,7 +3,7 @@
 ## Goal and shape
 
 regtrace is a deterministic evidence tool, not a compliance decision system. The snapshot is fixed; the
-library parses it, compares dates, and explains its own gaps. The public surface is a small set of frozen
+library parses it, compares dates, and lists its own gaps. The public surface is a small set of frozen
 dataclasses in `regtrace/model.py`; each module consumes those values rather than passing XML around.
 
 There are four separable jobs:
@@ -13,9 +13,9 @@ There are four separable jobs:
 3. parse Federal Register amendatory instructions into section claims;
 4. reconcile those claims against eCFR section versions and verify quoted citations.
 
-Keeping the jobs separate is what makes the unexplained list meaningful. A parser bug shows up as a
-label or section anomaly; a reconciliation miss shows up as an unexplained `(section, date)`; a citation
-miss shows up as a failed substring check.
+Keeping the jobs separate makes each kind of gap easier to trace. A labeling problem tends to show up
+as an unlabeled paragraph; a missing claim shows up as an unexplained `(section, date)`; a citation miss
+shows up as a failed substring check.
 
 ## Labeling CFR paragraphs
 
@@ -115,7 +115,8 @@ and `SECTNO` elements in document order:
 
 Ranges expand against section ids present in `versions()`, since a range cannot name a section eCFR has
 never seen. Results are deduplicated and sorted by `section_key`. A document without full text has no
-instructions.
+instructions, and neither does a document that states its change outside `REGTEXT`, as some CFR
+corrections do; its change can then appear as unexplained.
 
 ## Reconciliation
 
@@ -171,13 +172,16 @@ parser versus baseline precision and recall.
 
 Precision is `(matched + shifted) / (rows - before_history)`. Recall is
 `1 - unexplained / substantive versions with date != base`. Both are measured through `reconcile`, so the
-parser and baseline see the same version set and the same claim rules.
+parser and baseline see the same version set and the same claim rules. They measure agreement with eCFR's
+own version history on one pinned snapshot, not accuracy: nothing here is checked against independently
+verified amendments.
 
 The baseline predicts every section matching `438.` plus digits and an optional letter anywhere in the raw
-document XML. It usually has high recall and low precision: preambles cite many sections that the rule does
-not amend. The parser uses only amendatory text and `SECTNO` headings, so it is quieter but can miss a
-section mentioned only in prose. Reporting both is the point; a single accuracy number would hide the
-trade-off.
+document XML. The parser uses only amendatory text and `SECTNO` headings inside `REGTEXT`. A predicted
+section with no substantive eCFR change near the rule's dates lowers precision; a substantive change no
+row claims lowers recall. That is as far as these numbers go: they show how each prediction set lines up
+with eCFR's history on this snapshot, not why a section was or was not amended. Reporting both keeps the
+trade-off visible instead of folding it into one number.
 
 ## API surface
 
@@ -217,4 +221,4 @@ opens a socket.
 
 The React viewer, DHCS All Plan Letters and other state guidance, any LLM compliance flagging, Postgres,
 PDF parsing, and parsing applicability dates from inside regulation text are out of scope for this
-milestone. The library is the ground truth those later layers would be checked against.
+milestone. The library is the deterministic evidence those later layers would be checked against.
