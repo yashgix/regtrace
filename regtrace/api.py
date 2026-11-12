@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from datetime import date as Date
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 from typing import Annotated
 
@@ -43,7 +43,7 @@ def _require_data_date(value: str, data_dir: Path) -> str:
     return value
 
 
-@lru_cache(maxsize=None)
+@cache
 def _reconciliation(data_dir: Path):
     return reconcile(data_dir=data_dir)
 

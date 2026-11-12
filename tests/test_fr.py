@@ -75,8 +75,7 @@ class InstructionTests(unittest.TestCase):
 
     def test_nested_amdpar_inside_a_division_is_found(self) -> None:
         xml = (
-            '<ROOT><REGTEXT TITLE="42" PART="438"><DIV8><AMDPAR>1. Amend \u00a7 438.2.</AMDPAR></DIV8>'
-            "</REGTEXT></ROOT>"
+            '<ROOT><REGTEXT TITLE="42" PART="438"><DIV8><AMDPAR>1. Amend \u00a7 438.2.</AMDPAR></DIV8></REGTEXT></ROOT>'
         )
         found = _instructions(xml)
         self.assertEqual([item.number for item in found], [1])

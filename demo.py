@@ -160,7 +160,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics", type=Path, default=METRICS_PATH)
     parser.add_argument("--out", type=Path, help="write the output here (with --readme: the whole rendered README)")
-    parser.add_argument("--readme", type=Path, help="render the generated block of this README (in place without --out)")
+    parser.add_argument(
+        "--readme", type=Path, help="render the generated block of this README (in place without --out)"
+    )
     args = parser.parse_args()
 
     metrics = _load_metrics(args.metrics, required=args.readme is not None)

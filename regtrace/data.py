@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import xml.etree.ElementTree as ET
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 
 from .labels import label_paragraphs
@@ -39,7 +39,7 @@ def _date_from_name(name: str) -> str | None:
     return None
 
 
-@lru_cache(maxsize=None)
+@cache
 def _dates(data_dir: Path) -> tuple[str, ...]:
     found = []
     for path in (data_dir / "ecfr").glob("part438-*.xml"):
@@ -54,7 +54,7 @@ def dates(data_dir: Path = DATA_DIR) -> list[str]:
     return list(_dates(Path(data_dir)))
 
 
-@lru_cache(maxsize=None)
+@cache
 def _load_part(date: str, data_dir: Path) -> Part:
     if date not in _dates(data_dir):
         raise KeyError(date)
@@ -79,7 +79,7 @@ def load_part(date: str, data_dir: Path = DATA_DIR) -> Part:
     return _load_part(date, Path(data_dir))
 
 
-@lru_cache(maxsize=None)
+@cache
 def _versions(data_dir: Path) -> tuple[Version, ...]:
     payload = json.loads((data_dir / "ecfr" / "versions.json").read_text(encoding="utf-8"))
     return tuple(
@@ -93,7 +93,7 @@ def versions(data_dir: Path = DATA_DIR) -> list[Version]:
     return list(_versions(Path(data_dir)))
 
 
-@lru_cache(maxsize=None)
+@cache
 def _documents(data_dir: Path) -> tuple[Document, ...]:
     payload = json.loads((data_dir / "fr" / "documents.json").read_text(encoding="utf-8"))
     docs = []
@@ -119,7 +119,7 @@ def documents(data_dir: Path = DATA_DIR) -> list[Document]:
     return list(_documents(Path(data_dir)))
 
 
-@lru_cache(maxsize=None)
+@cache
 def _document_xml(number: str, data_dir: Path) -> str | None:
     path = data_dir / "fr" / f"{number}.xml"
     if not path.is_file():

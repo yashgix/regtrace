@@ -136,7 +136,7 @@ def _normalize(chars: list[str], ids: list[int | None]) -> tuple[str, list[int |
     out_ids: list[int | None] = []
     pending_space = False
     pending_id: int | None = None
-    for char, italic_id in zip(chars, ids):
+    for char, italic_id in zip(chars, ids, strict=True):
         if char.isspace():
             if not pending_space:
                 pending_space = True

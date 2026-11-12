@@ -79,8 +79,7 @@ def compute_metrics() -> dict[str, int | float]:
     self_valid, perturbed_rejected = _citation_metrics(latest, latest_part)
     baseline_rows, baseline_unexplained = reconcile(predict=_baseline_predict)
     paragraph_changes = sum(
-        len(diff(load_part(left), load_part(right)))
-        for left, right in zip(all_dates, all_dates[1:], strict=False)
+        len(diff(load_part(left), load_part(right))) for left, right in zip(all_dates, all_dates[1:], strict=False)
     )
 
     return {

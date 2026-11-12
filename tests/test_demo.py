@@ -198,7 +198,9 @@ class ReadmeTests(unittest.TestCase):
     def test_render_readme_with_two_closing_markers_exits(self) -> None:
         with TemporaryDirectory() as tmp:
             readme = Path(tmp) / "README.md"
-            original = f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\n{demo.EVIDENCE_END}\n\n{demo.EVIDENCE_END}\n\nTail.\n"
+            original = (
+                f"Intro.\n\n{demo.EVIDENCE_START}\n\nold\n\n{demo.EVIDENCE_END}\n\n{demo.EVIDENCE_END}\n\nTail.\n"
+            )
             readme.write_text(original, encoding="utf-8")
             with mock.patch.object(demo, "render", return_value="NEW\n"), self.assertRaises(SystemExit):
                 demo.render_readme({"dates": 2}, readme)
