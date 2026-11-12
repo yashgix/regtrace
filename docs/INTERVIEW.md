@@ -2,7 +2,7 @@
 
 ## The problem
 
-Readily maps regulatory changes to health-plan policies and needs every flag tied to exact rule text and defensible to a regulator. This project builds the checkable federal half on public law: for every Federal Register document touching 42 CFR Part 438 since 2016, which sections changed, whether and when the change appears in the point-in-time eCFR, which eCFR changes no tagged document explains, and whether a quoted citation is in force at a date.
+Readily says it uses AI to "analyze regulatory updates and documents, flag what applies, identify affected policies" and "cite supporting evidence" (<https://www.readily.ai/>). This project builds a checkable federal piece of that on public law: for every Federal Register document touching 42 CFR Part 438 since 2016, which sections changed, whether and when the change appears in the point-in-time eCFR, which eCFR changes no tagged document explains, and whether a quoted citation is in force at a date.
 
 ## Why this approach
 
@@ -40,7 +40,7 @@ Traceability is mostly a data-model and edge-case problem: CFR paragraph labels 
 - The citation verifier is checked both ways: a section's own text must verify, and the same quote with its last word changed must not.
 - The unexplained list is the honest edge of the method: it shows where Federal Register tagging and eCFR versions do not line up.
 - The specified edge cases have direct regression tests, including an instruction that carries across REGTEXT blocks and labels that run from (z) to (aa).
-- This maps directly to Readily's need for flags tied to exact rule text: it builds the checkable federal ground truth first.
+- It gives the "cite supporting evidence" step Readily describes a checkable federal ground truth to cite.
 - Next steps in the spec are a React viewer, DHCS All Plan Letters, and LLM compliance flags checked against this ground truth.
 
 ## Questions to expect
