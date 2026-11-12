@@ -102,8 +102,8 @@ Example request and response shapes are in `examples/`.
 
 ## Results
 
-No number below is typed by hand. The snapshot counts are asserted by the test suite, and every value is
-rendered from `results/metrics.json`, whose keys are:
+No number below is typed by hand. Of the counts, the test suite asserts only the snapshot's dates,
+documents and rules; every value is rendered from `results/metrics.json`, whose keys are:
 
 - snapshot shape: `dates`, `sections_latest`, `paragraphs_latest`, `unlabeled_latest`, `paragraph_changes`;
 - inputs: `documents`, `rules`, `rules_with_instructions`, `instructions`, `rule_sections`;
