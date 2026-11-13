@@ -30,7 +30,7 @@ The tool is not a legal edition and does not replace the official CFR. It can on
 
 ## What I learned
 
-Traceability is mostly a data-model and edge-case problem: CFR paragraph labels are ambiguous and date matching needs care. A pinned, checksummed snapshot makes results reproducible. Unexplained changes are useful evidence, not just errors. Independent review finds missing tests even when the behavior is right. A deterministic, checkable base is worth having before LLM-made compliance flags. The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model.
+Traceability is mostly a data-model and edge-case problem: CFR paragraph labels are ambiguous and date matching needs care. A pinned, checksummed snapshot makes results reproducible. Unexplained changes are useful evidence, not just errors. Independent review finds missing tests even when the behavior is right. A deterministic, checkable base is worth having before LLM-made compliance flags. Yash directed the project. AI coding agents wrote most of the code and tests, and automated model reviews checked them; the evidence is the tests and the rendered tables, not the reviews.
 
 ## Talking points
 

@@ -16,6 +16,39 @@ document tagged to Part 438 since 2016 it answers:
 This is a checkable public-law piece of regulatory change management. It is not legal advice and it does
 not decide whether a health plan is compliant.
 
+## One real change, end to end
+
+The 2024 Medicaid managed care final rule (Federal Register document `2024-08085`, published 2024-05-10,
+effective 2024-07-09) carries this amendatory instruction:
+
+> 12. Amend § 438.68 by— a. Revising paragraphs (b)(1) introductory text, (b)(1)(iii), (d)(1) and (2), and
+> (e); and b. Adding paragraphs (f) through (h).
+
+regtrace parses it into a claim on § 438.68. The eCFR has a substantive version of § 438.68 on 2024-07-09,
+the effective date, so the row is `matched`. Diffing the labeled eCFR snapshots of 2024-07-05 and 2024-07-09
+shows 44 paragraph changes in the section (37 added, 7 revised), including the new paragraph `(f)` on
+secret shopper surveys.
+
+The same rule also names § 438.608, but the eCFR shows no substantive change to it between the rule's
+publication and 30 days after its effective date, so that row is `unmatched`. The eCFR does record
+§ 438.608 and § 438.16 changing on 2024-09-24, and no parsed instruction claims either one. regtrace does
+not guess why. It lists both under **Unexplained changes** with the next human check. (A rule's own
+delayed applicability dates are one possible reason, and they are not parsed, as *Limits* says.)
+
+To reproduce, from the repository root:
+
+```python
+from regtrace.diff import changes_between
+from regtrace.fr import instructions
+from regtrace.reconcile import reconcile
+
+rows, unexplained = reconcile()
+[i.text for i in instructions("2024-08085") if i.sections == ("438.68",)]
+[r for r in rows if r.document == "2024-08085" and r.section in ("438.68", "438.608")]
+[c for c in changes_between("2024-07-05", "2024-07-09") if c.section == "438.68"]
+[u for u in unexplained if u[1] == "2024-09-24"]
+```
+
 ## Why it matters
 
 Medi-Cal plans and their vendors turn federal and state changes into policy edits, owner assignments
@@ -85,7 +118,11 @@ The repository never needs the network at test time. All parsing is local XML an
 
 ## Run
 
+Python 3.12 or later:
+
 ```sh
+python3 -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt ruff
 make test
 make lint
 make data-check
@@ -97,7 +134,8 @@ uvicorn regtrace.api:app --reload
 `make test` runs the `unittest` suite. `make lint` runs ruff. `make data-check` checks the pinned
 checksums. `experiment.py` writes deterministic metrics. `demo.py` renders the evidence block below
 and, with `--readme`, refreshes it in place; without that flag it prints the same Markdown to stdout,
-so a reviewer can diff the tables without touching this file. The API is read-only.
+so a reviewer can diff the tables without touching this file. The API is read-only. Serving it needs
+`pip install uvicorn`, which is not in `requirements.txt` because the tests use FastAPI's test client.
 
 Example request and response shapes are in `examples/`.
 
@@ -279,7 +317,13 @@ Every downloaded file is checksummed in `upstream/MANIFEST.json` (fetch time
 2026-11-10T07:19:08+00:00). `tools/fetch_data.py --verify` recomputes SHA-256 and fails if a byte
 changed; `make data-check` runs it. Re-fetching is explicit; tests and the API never fetch.
 
-## Build note
+## How this was built
 
-Built with Arcturus, an AI multi-agent system, and reviewed by an independent model. The code, tests and
-rendered tables are the evidence; no number in the generated block is hand-entered.
+Yash Gupta directed the project. AI coding agents (Claude Code and an agent build pipeline) wrote most of the
+code and tests, and automated model reviews checked them. Those reviews are not an external audit. The code,
+tests and rendered tables are the evidence, and no number in the generated block is hand-entered.
+
+## License
+
+MIT for this repository's code (`LICENSE`). The files in `upstream/` are US federal government works from
+the eCFR and the Federal Register, in the public domain.
