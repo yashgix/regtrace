@@ -34,7 +34,7 @@ Traceability is mostly a data-model and edge-case problem: CFR paragraph labels 
 
 ## Talking points
 
-- The project was developed with Arcturus, Yash's multi-agent system, and reviewed by an independent model; it was not hand-written by Yash.
+- AI coding agents wrote most of the code and tests under Yash's direction, and automated model reviews checked them; it was not hand-written by Yash, and the reviews are not an external audit.
 - Every reported number comes from pinned public federal data and code that can be rerun; nothing is typed into the README or these notes by hand.
 - The parser and the baseline are compared on agreement with eCFR's version history, read from the README's generated table: that shows how their predicted sections line up with eCFR's changes, not which one is right about amendments.
 - The citation verifier is checked both ways: a section's own text must verify, and the same quote with its last word changed must not.
