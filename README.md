@@ -1,7 +1,7 @@
 # regtrace
 
-Trace every Federal Register change to 42 CFR Part 438 (Medicaid managed care) against the official
-point-in-time eCFR.
+Trace the Federal Register documents tagged to 42 CFR Part 438 (Medicaid managed care) since 2016 against
+the official point-in-time eCFR.
 
 regtrace is a small deterministic Python library with a read-only JSON API. For every Federal Register
 document tagged to Part 438 since 2016 it answers:
