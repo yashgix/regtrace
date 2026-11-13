@@ -35,7 +35,7 @@ Traceability is mostly a data-model and edge-case problem: CFR paragraph labels 
 ## Talking points
 
 - AI coding agents wrote most of the code and tests under Yash's direction, and automated model reviews checked them; it was not hand-written by Yash, and the reviews are not an external audit.
-- Every reported number comes from pinned public federal data and code that can be rerun; nothing is typed into the README or these notes by hand.
+- Every reported number comes from pinned public federal data and code that can be rerun; nothing in the README's generated block is typed by hand, and the hand-written walk-through above it can be rerun with the snippet it shows.
 - The parser and the baseline are compared on agreement with eCFR's version history, read from the README's generated table: that shows how their predicted sections line up with eCFR's changes, not which one is right about amendments.
 - The citation verifier is checked both ways: a section's own text must verify, and the same quote with its last word changed must not.
 - The unexplained list is the honest edge of the method: it lists eCFR changes no parsed instruction claims, whether the cause is missed tagging, a change stated outside REGTEXT or something else.

@@ -31,8 +31,8 @@ secret shopper surveys.
 
 The same rule also names § 438.608, but the eCFR shows no substantive change to it between the rule's
 publication and 30 days after its effective date, so that row is `unmatched`. The eCFR does record
-§ 438.608 and § 438.16 changing on 2024-09-24, and no parsed instruction claims either one. regtrace does
-not guess why. It lists both under **Unexplained changes** with the next human check. (A rule's own
+§ 438.608 and § 438.16 changing on 2024-09-24, and no reconciliation row claims either of those versions.
+regtrace does not guess why. It lists both under **Unexplained changes** with the next human check. (A rule's own
 delayed applicability dates are one possible reason, and they are not parsed, as *Limits* says.)
 
 To reproduce, from the repository root:
@@ -46,7 +46,7 @@ rows, unexplained = reconcile()
 [i.text for i in instructions("2024-08085") if i.sections == ("438.68",)]
 [r for r in rows if r.document == "2024-08085" and r.section in ("438.68", "438.608")]
 [c for c in changes_between("2024-07-05", "2024-07-09") if c.section == "438.68"]
-[u for u in unexplained if u[1] == "2024-09-24"]
+[u for u in unexplained if u[0] in ("438.16", "438.608")]
 ```
 
 ## Why it matters
