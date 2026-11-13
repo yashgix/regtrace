@@ -134,11 +134,89 @@ whether any predicted section was actually amended.
 
 <!-- regtrace:evidence:start -->
 
-_This block is generated, never typed. It stays between the two markers so `python demo.py --readme
-README.md` can splice it in place: metrics table, unexplained changes, discrepancies and the
-citation walk-through are rendered from `results/metrics.json` and `reconcile()`. Run
-`python experiment.py --out results/metrics.json` and then `python demo.py --readme README.md` to fill
-it; `python demo.py` prints the same Markdown to stdout for a diff._
+### Metrics
+
+| metric | value |
+|---|---|
+| baseline_precision | 0.431298 |
+| baseline_recall | 0.913043 |
+| before_history | 7 |
+| citation_perturbed_rejected | 1.0 |
+| citation_self_valid | 1.0 |
+| dates | 38 |
+| documents | 45 |
+| instructions | 102 |
+| matched | 74 |
+| paragraph_changes | 732 |
+| paragraphs_latest | 2281 |
+| parser_precision | 0.955056 |
+| parser_recall | 0.89441 |
+| rule_sections | 96 |
+| rules | 26 |
+| rules_with_instructions | 20 |
+| sections_latest | 106 |
+| shifted | 11 |
+| unexplained | 17 |
+| unlabeled_latest | 16 |
+| unmatched | 4 |
+
+### Unexplained changes
+
+| section | date | heading | next check |
+|---|---|---|---|
+| 438.210 | 2021-01-01 | § 438.210 Coverage and authorization of services. | No parsed instruction claims it. Check Federal Register documents around 2021-01-01 for § 438.210, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.400 | 2021-01-01 | § 438.400 Statutory basis, definitions, and applicability. | No parsed instruction claims it. Check Federal Register documents around 2021-01-01 for § 438.400, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.402 | 2021-01-01 | § 438.402 General requirements. | No parsed instruction claims it. Check Federal Register documents around 2021-01-01 for § 438.402, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.6 | 2021-01-12 | § 438.6 Special contract provisions related to payment. | No parsed instruction claims it. Check Federal Register documents around 2021-01-12 for § 438.6, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.68 | 2021-03-11 | § 438.68 Network adequacy standards. | No parsed instruction claims it. Check Federal Register documents around 2021-03-11 for § 438.68, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.340 | 2021-04-29 | § 438.340 Managed care State quality strategy. | No parsed instruction claims it. Check Federal Register documents around 2021-04-29 for § 438.340, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.4 | 2021-07-01 | § 438.4 Actuarial soundness. | No parsed instruction claims it. Check Federal Register documents around 2021-07-01 for § 438.4, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.6 | 2021-07-01 | § 438.6 Special contract provisions related to payment. | No parsed instruction claims it. Check Federal Register documents around 2021-07-01 for § 438.6, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.16 | 2024-09-24 | § 438.16 In lieu of services and settings (ILOS) requirements. | No parsed instruction claims it. Check Federal Register documents around 2024-09-24 for § 438.16, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.334 | 2024-09-24 | § 438.334 [Reserved] | No parsed instruction claims it. Check Federal Register documents around 2024-09-24 for § 438.334, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.358 | 2024-09-24 | § 438.358 Activities related to external quality review. | No parsed instruction claims it. Check Federal Register documents around 2024-09-24 for § 438.358, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.608 | 2024-09-24 | § 438.608 Program integrity requirements under the contract. | No parsed instruction claims it. Check Federal Register documents around 2024-09-24 for § 438.608, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.356 | 2024-10-02 | § 438.356 State contract options for external quality review. | No parsed instruction claims it. Check Federal Register documents around 2024-10-02 for § 438.356, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.2 | 2024-10-23 | § 438.2 Definitions. | No parsed instruction claims it. Check Federal Register documents around 2024-10-23 for § 438.2, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.358 | 2024-12-19 | § 438.358 Activities related to external quality review. | No parsed instruction claims it. Check Federal Register documents around 2024-12-19 for § 438.358, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.356 | 2025-10-01 | § 438.356 State contract options for external quality review. | No parsed instruction claims it. Check Federal Register documents around 2025-10-01 for § 438.356, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+| 438.72 | 2026-02-25 | § 438.72 Additional requirements for long-term services and supports. | No parsed instruction claims it. Check Federal Register documents around 2026-02-25 for § 438.72, including corrections written outside REGTEXT and documents the CFR tagging missed. |
+
+### Discrepancies
+
+| document | section | expected | eCFR date | status |
+|---|---|---|---|---|
+| 2016-31650 | 438.3 | 2016-12-30 | — | unmatched |
+| 2016-31650 | 438.4 | 2016-12-30 | — | unmatched |
+| 2016-31650 | 438.6 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.8 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.10 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.210 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.350 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.358 | 2016-12-30 | 2017-01-18 | shifted |
+| 2016-31650 | 438.364 | 2016-12-30 | — | unmatched |
+| 2016-31650 | 438.604 | 2016-12-30 | 2017-01-18 | shifted |
+| 2017-04307 | 438.358 | 2017-03-03 | 2017-03-06 | shifted |
+| 2019-06822 | 438.210 | 2020-01-01 | 2019-04-16 | shifted |
+| 2019-06822 | 438.400 | 2020-01-01 | 2019-04-16 | shifted |
+| 2019-06822 | 438.402 | 2020-01-01 | 2019-04-16 | shifted |
+| 2024-08085 | 438.608 | 2024-07-09 | — | unmatched |
+
+### Walk-through
+
+Latest eCFR snapshot: `2026-07-31` with 106 sections.
+
+**§ 438.68 Network adequacy standards.**
+- `(a)` (a) General rule. A State that contracts with an MCO, PIHP or PAHP to deliver Medicaid services must develop and enforce network adequacy standards consistent…
+- `(b)` (b) Provider-specific network adequacy standards.
+- `(b)(1)` (1) Provider types. At a minimum, a State must develop a quantitative network adequacy standard, other than appointment wait times, for the following provider…
+
+Changes from `2026-06-03` to `2026-07-31`: 3.
+- `added` 438.58 (a)
+- `added` 438.58 (b)
+- `removed` 438.58 ~1
+
+Citation check on `438.1(a)`: `valid`; with the last word replaced: `not_found`.
 
 <!-- regtrace:evidence:end -->
 
