@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>regtrace</title>
+<meta name="description" content="Trace the Federal Register documents tagged to 42 CFR Part 438 since 2016 against the official point-in-time eCFR.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a 760px reading column like a printed rule, with the timeline and status bar widened to 980px. Navy is
+   the accent. Status colors only mark reconciliation status. One light theme on purpose. */
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --band: #f4f6fa;
+  --ink: #17202f;
+  --muted: #566074;
+  --line: #e1e5ee;
+  --accent: #1f3f77;
+  --accent-soft: #e8eef8;
+  --matched: #1f7a4d;
+  --shifted: #b7791f;
+  --history: #8a94a6;
+  --unmatched: #b3261e;
+  --unexplained: #6b3fa0;
+  --unexplained-soft: #f3edfa;
+  --code: #eef1f7;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --s0: 0.8125rem; --s1: 1.0625rem; --s2: 1.25rem; --s3: 1.65rem; --s4: clamp(2.2rem, 5.5vw, 3.2rem);
+  --radius: 12px;
+}
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: var(--s1); line-height: 1.65; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.col { max-width: 760px; margin-inline: auto; }
+.wide { max-width: 980px; margin-inline: auto; }
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.2; margin: 0; }
+h1, h2 { font-family: var(--serif); }
+h2 { font-size: var(--s3); font-weight: 600; letter-spacing: -0.01em; }
+h3 { font-size: var(--s1); font-weight: 600; }
+p, ul, ol { margin: 0; }
+ul, ol { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+code { font-family: var(--mono); font-size: 0.85em; background: var(--code); padding: 0.08em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+.muted { color: var(--muted); }
+.small { font-size: var(--s0); }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: var(--s0); font-weight: 600; color: var(--accent); letter-spacing: 0.07em; text-transform: uppercase; }
+.stack { display: flex; flex-direction: column; gap: 1.1rem; }
+section { padding-block: 2.75rem; }
+section + section { border-top: 1px solid var(--line); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.bar-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.6rem; }
+.brand { font-family: var(--serif); font-weight: 700; }
+.tabs { display: flex; gap: 0.25rem; }
+.bar-in .tabs { margin-left: auto; }
+.gh { font-size: var(--s0); font-weight: 600; text-decoration: none; white-space: nowrap; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0.3rem 0.8rem; }
+.gh:hover { background: var(--accent-soft); }
+.tabs button { font: inherit; font-size: var(--s0); font-weight: 500; border: 0; background: transparent; color: var(--muted); padding: 0.4rem 0.8rem; border-radius: 999px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
+
+header { padding-block: 3.5rem 2.25rem; background: linear-gradient(180deg, var(--band), var(--paper)); }
+h1 { font-size: var(--s4); font-weight: 700; letter-spacing: -0.02em; }
+.lede { font-size: var(--s2); color: var(--muted); max-width: 60ch; line-height: 1.55; }
+.meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: var(--s0); color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 600; }
+
+blockquote { margin: 0; padding: 1rem 1.25rem; border-left: 3px solid var(--accent); background: var(--band); border-radius: 0 8px 8px 0; font-family: var(--serif); font-size: 1.05rem; line-height: 1.55; }
+blockquote .src { display: block; margin-top: 0.4rem; font-family: var(--sans); font-size: var(--s0); color: var(--muted); }
+
+.timeline { display: flex; flex-direction: column; gap: 1rem; }
+.track { position: relative; height: 44px; margin-inline: 6px; }
+.track::before { content: ""; position: absolute; left: 0; right: 0; top: 21px; height: 2px; background: var(--line); }
+.window { position: absolute; top: 17px; height: 10px; background: var(--accent-soft); border-radius: 4px; }
+.pin { position: absolute; top: 14px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; border: 3px solid var(--paper); box-shadow: 0 0 0 1px var(--line); }
+.months { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-inline: 6px; font-variant-numeric: tabular-nums; }
+.events { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
+.ev { border: 1px solid var(--line); border-radius: var(--radius); padding: 0.9rem; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.ev .date { font-family: var(--mono); font-size: var(--s0); color: var(--muted); }
+.ev .what { font-weight: 600; line-height: 1.35; }
+.ev .detail { font-size: var(--s0); color: var(--muted); line-height: 1.5; }
+.chip { align-self: flex-start; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 999px; color: #fff; }
+.c-pub { background: var(--accent); } .c-matched { background: var(--matched); } .c-unmatched { background: var(--unmatched); } .c-unexplained { background: var(--unexplained); }
+.ev.unexplained { background: var(--unexplained-soft); border-color: #e0d2f1; }
+
+.status-bar { display: flex; height: 30px; border-radius: 6px; overflow: hidden; }
+.status-bar span { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-size: var(--s0); }
+.legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.legend b { font-variant-numeric: tabular-nums; }
+
+.pr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.pr div { border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.pr .big { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+pre { margin: 0; background: var(--band); border: 1px solid var(--line); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; font-family: var(--mono); font-size: 0.82rem; line-height: 1.6; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: var(--s0); color: var(--muted); font-weight: 500; background: var(--band); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; font: inherit; font-weight: 500; padding: 0.55rem 1rem; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); background: var(--paper); cursor: pointer; }
+footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 760px) {
+  .events { grid-template-columns: minmax(0, 1fr); }
+  .pr { grid-template-columns: minmax(0, 1fr); }
+  .brand { display: none; }
+  .tabs button { padding: 0.4rem 0.55rem; }
+  .gh { padding: 0.3rem 0.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar wrap"><div class="wide bar-in">
+  <span class="brand">regtrace</span>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true" data-view="overview">Overview</button>
+    <button role="tab" id="tab-details" aria-controls="details" aria-selected="false" data-view="details">Technical details</button>
+  </div>
+  <a class="gh" href="https://github.com/yashgix/regtrace" target="_blank" rel="noopener">GitHub ↗</a>
+</div></div>
+
+<main id="overview" role="tabpanel" aria-labelledby="tab-overview">
+  <header class="wrap"><div class="col stack">
+    <p class="eyebrow">42 CFR Part 438 · Medicaid managed care</p>
+    <h1>regtrace</h1>
+    <p class="lede">Trace the Federal Register documents tagged to 42 CFR Part 438 since 2016 against the official point-in-time eCFR. For each final rule it shows which sections the rule amends, whether the eCFR changed on the effective date, and which eCFR changes no rule explains.</p>
+    <div class="meta"><span><b class="num">45</b> Federal Register documents</span><span><b class="num">26</b> final rules reconciled</span><span><b class="num">38</b> eCFR snapshots</span><span><a href="https://github.com/yashgix/regtrace">github.com/yashgix/regtrace</a></span></div>
+  </div></header>
+
+  <section class="wrap" aria-labelledby="ex-h"><div class="wide stack">
+    <p class="eyebrow">One real change, end to end</p>
+    <h2 id="ex-h">The 2024 managed care rule, traced to the paragraph</h2>
+    <blockquote>12. Amend § 438.68 by— a. Revising paragraphs (b)(1) introductory text, (b)(1)(iii), (d)(1) and (2), and (e); and b. Adding paragraphs (f) through (h).<span class="src">Federal Register document 2024-08085, amendatory instruction 12</span></blockquote>
+    <div class="timeline" role="img" aria-label="Timeline from May to October 2024: published 10 May, effective 9 July with § 438.68 matched, matching window to 8 August, and unexplained changes on 24 September.">
+      <div class="track">
+        <span class="window" style="left:5.9%;width:58.8%"></span>
+        <span class="pin" style="left:5.9%;background:var(--accent)"></span>
+        <span class="pin" style="left:45.1%;background:var(--matched)"></span>
+        <span class="pin" style="left:95.4%;background:var(--unexplained)"></span>
+      </div>
+      <div class="months" aria-hidden="true"><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
+      <div class="events">
+        <div class="ev"><span class="chip c-pub">Published</span><span class="date">2024-05-10</span><span class="what">Rule 2024-08085</span><span class="detail">regtrace parses instruction 12 into a claim on § 438.68. The rule also names § 438.608.</span></div>
+        <div class="ev"><span class="chip c-matched">Matched</span><span class="date">2024-07-09</span><span class="what">§ 438.68 changes on the effective date</span><span class="detail">Diffing the eCFR snapshots of 2024-07-05 and 2024-07-09 shows 44 paragraph changes: 37 added, 7 revised, including new (f) on secret shopper surveys.</span></div>
+        <div class="ev"><span class="chip c-unmatched">Unmatched</span><span class="date">to 2024-08-08</span><span class="what">§ 438.608 shows no change</span><span class="detail">Nothing substantive between publication and 30 days after the effective date (the shaded window).</span></div>
+        <div class="ev unexplained"><span class="chip c-unexplained">Unexplained</span><span class="date">2024-09-24</span><span class="what">§ 438.608 and § 438.16 change</span><span class="detail">No reconciliation row claims either version. regtrace does not guess why. It lists both with the next human check.</span></div>
+      </div>
+    </div>
+    <p class="small muted">One possible reason for the September changes is a rule's own delayed applicability dates, which regtrace does not parse yet. Two more sections (§ 438.334 and § 438.358) also change that day with no claim.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="res-h"><div class="wide stack">
+    <p class="eyebrow">Across all 26 rules</p>
+    <h2 id="res-h">96 predicted section changes, 17 eCFR changes no rule claims</h2>
+    <div class="status-bar" role="img" aria-label="Of 96 rule sections: 74 matched, 11 shifted, 7 before eCFR history, 4 unmatched.">
+      <span style="width:77.08%;background:var(--matched)"></span>
+      <span style="width:11.46%;background:var(--shifted)"></span>
+      <span style="width:7.29%;background:var(--history)"></span>
+      <span style="width:4.17%;background:var(--unmatched)"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--matched)"></i>Matched <b>74</b></span>
+      <span><i style="background:var(--shifted)"></i>Shifted <b>11</b></span>
+      <span><i style="background:var(--history)"></i>Before eCFR history <b>7</b></span>
+      <span><i style="background:var(--unmatched)"></i>Unmatched <b>4</b></span>
+      <span><i style="background:var(--unexplained)"></i>Unexplained eCFR versions <b>17</b></span>
+    </div>
+    <p>The two lists that matter for compliance work are the <b>discrepancies</b> (15 shifted or unmatched rows, each with the expected and actual eCFR date) and the <b>unexplained changes</b> (17 section versions with the next human check). Both are tables in the README, generated from the data.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="why-h"><div class="col stack">
+    <p class="eyebrow">Why it matters</p>
+    <h2 id="why-h">Part of compliance change work can be checked mechanically</h2>
+    <p>Medicaid health plans turn federal changes into policy edits, owners and audit evidence. Three parts of that work can be checked without judgment: which rule text changed, when the change appears in the eCFR, and whether a quoted citation was in force on a date.</p>
+    <ul>
+      <li><b>Point-in-time text.</b> Every section and paragraph as of any snapshot date, with CFR-style labels.</li>
+      <li><b>Explicit matching rules.</b> Each status has a written definition, so every row can be rechecked by hand.</li>
+      <li><b>A citation checker that fails closed.</b> A quote is valid only if it is in that paragraph on that date. In a self-check over every paragraph of 20 characters or more, each paragraph's own text checks as valid, and the same quote with its last word changed is rejected.</li>
+    </ul>
+    <p class="small muted">regtrace is independent of Readily and uses public federal data only. It makes no claim about Readily's customers, data, accuracy or implementation.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="lim-h"><div class="col stack">
+    <p class="eyebrow">Limits</p>
+    <h2 id="lim-h">What this does not show</h2>
+    <ul>
+      <li>The scores measure agreement with eCFR's own version history on one pinned snapshot. They are not accuracy against verified amendments.</li>
+      <li>The unexplained list is changes no parsed instruction claims. It is not a count of untagged amendments and not a claim that the eCFR is wrong.</li>
+      <li>Applicability dates inside rule text are not parsed. Only federal rules are covered, with no state guidance.</li>
+      <li>The eCFR is an editorial compilation, not the official legal edition.</li>
+    </ul>
+    <p><button class="btn" type="button" data-view="details">Technical details →</button></p>
+  </div></section>
+</main>
+
+<main id="details" role="tabpanel" aria-labelledby="tab-details" hidden>
+  <header class="wrap"><div class="col stack">
+    <p class="eyebrow">Technical details</p>
+    <h1 style="font-size:clamp(1.8rem,4.4vw,2.5rem)">Method, data and results</h1>
+  </div></header>
+
+  <section class="wrap" aria-labelledby="pipe-h"><div class="col stack">
+    <h2 id="pipe-h">Four jobs, one module each</h2>
+    <ol>
+      <li><code>labels.py</code> turns eCFR XML into CFR-style labeled paragraphs such as <code>(b)(1)(i)</code>. Unusual forms fall back to an unlabeled <code>~n</code> form rather than a guessed label.</li>
+      <li><code>diff.py</code> diffs two labeled snapshots into ordered change records.</li>
+      <li><code>fr.py</code> parses Federal Register amendatory instructions inside <code>REGTEXT</code> into section claims.</li>
+      <li><code>reconcile.py</code> and <code>cite.py</code> reconcile those claims against eCFR section versions and verify quoted citations.</li>
+    </ol>
+    <p class="small muted">A read-only FastAPI app serves sections at a date, changes between dates, documents with their rows, the unexplained list and <code>POST /verify</code>.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="st-h"><div class="col stack">
+    <h2 id="st-h">What the statuses mean</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Status</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td><code>matched</code></td><td>The eCFR has a substantive version of the section on the rule's effective date, or its publication date when there is no effective date.</td></tr>
+        <tr><td><code>shifted</code></td><td>No version on that date, but one between publication and 30 days after the expected date. The nearest date wins.</td></tr>
+        <tr><td><code>before_history</code></td><td>Both dates are on or before 2017-01-01, so the eCFR cannot witness the change.</td></tr>
+        <tr><td><code>unmatched</code></td><td>None of the above.</td></tr>
+        <tr><td><code>unexplained</code></td><td>A substantive eCFR version, after the base date, that no row claims.</td></tr>
+      </tbody>
+    </table></div>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="pr-h"><div class="col stack">
+    <h2 id="pr-h">Parser against a simple baseline</h2>
+    <div class="pr">
+      <div><span class="small muted">Instruction parser</span><span class="big">95.5% / 89.4%</span><span class="small muted">precision / recall</span></div>
+      <div><span class="small muted">Baseline: every <code>438.N</code> in the document</span><span class="big">43.1% / 91.3%</span><span class="small muted">precision / recall</span></div>
+    </div>
+    <p class="small muted">Precision is the share of predicted rows that show a substantive eCFR change near the rule's dates. Recall is the share of substantive eCFR changes that some row claims. Both measure agreement with eCFR's own history on this snapshot. They do not show whether a predicted section was actually amended.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="dis-h"><div class="wide stack">
+    <h2 id="dis-h">Discrepancies outside 2016-31650</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Document</th><th>Section</th><th>Expected</th><th>eCFR date</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">2017-04307</td><td class="mono">438.358</td><td class="mono">2017-03-03</td><td class="mono">2017-03-06</td><td>shifted</td></tr>
+        <tr><td class="mono">2019-06822</td><td class="mono">438.210</td><td class="mono">2020-01-01</td><td class="mono">2019-04-16</td><td>shifted</td></tr>
+        <tr><td class="mono">2019-06822</td><td class="mono">438.400</td><td class="mono">2020-01-01</td><td class="mono">2019-04-16</td><td>shifted</td></tr>
+        <tr><td class="mono">2019-06822</td><td class="mono">438.402</td><td class="mono">2020-01-01</td><td class="mono">2019-04-16</td><td>shifted</td></tr>
+        <tr><td class="mono">2024-08085</td><td class="mono">438.608</td><td class="mono">2024-07-09</td><td class="mono">—</td><td>unmatched</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">The 2016 managed care rule (2016-31650) accounts for the other 10: seven sections appear on 2017-01-18 instead of 2016-12-30, and three never show a change. All 15 rows are in the README.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="data-h"><div class="col stack">
+    <h2 id="data-h">Data</h2>
+    <p><code>upstream/</code> is a pinned snapshot of US federal works in the public domain: the full eCFR XML of Part 438 for each of 38 dates on which any section changed, eCFR section versions, and the Federal Register documents tagged to 42 CFR 438 since 2016, with full text where available. Every file's source URL, SHA-256 and size are in <code>upstream/MANIFEST.json</code>. Tests and the API never use the network.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="run-h"><div class="col stack">
+    <h2 id="run-h">Reproduce</h2>
+<pre>python3 -m venv .venv &amp;&amp; . .venv/bin/activate
+pip install -r requirements.txt ruff
+make test         # 154 tests
+make lint
+make data-check
+python experiment.py --out results/metrics.json
+python demo.py --readme README.md</pre>
+    <p class="small muted">The experiment is deterministic, and a rerun reproduces the committed results and README tables byte for byte. CI runs lint and tests on Ubuntu.</p>
+  </div></section>
+
+  <section class="wrap" aria-labelledby="src-h"><div class="col stack">
+    <h2 id="src-h">License and how it was built</h2>
+    <p>The code is MIT. The files in <code>upstream/</code> are US federal government works from the eCFR and the Federal Register.</p>
+    <p class="small muted">I directed the project. AI coding agents wrote most of the code and tests, and automated model reviews checked them. Those reviews are not an external audit or certification. The evidence is the code, the tests and the generated results.</p>
+    <p><button class="btn" type="button" data-view="overview">← Overview</button></p>
+  </div></section>
+</main>
+
+<footer class="wrap"><div class="wide small muted">regtrace · Yash Gupta · <a href="https://github.com/yashgix/regtrace">github.com/yashgix/regtrace</a></div></footer>
+
+<script>
+const views = ["overview", "details"];
+function show(v) {
+  if (!views.includes(v)) v = "overview";
+  for (const x of views) {
+    document.getElementById(x).hidden = x !== v;
+    document.getElementById("tab-" + x).setAttribute("aria-selected", String(x === v));
+  }
+}
+document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => {
+  history.replaceState(null, "", "#" + b.dataset.view);
+  show(b.dataset.view);
+  window.scrollTo(0, 0);
+}));
+addEventListener("hashchange", () => show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>
+</body>
+</html>

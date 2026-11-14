@@ -3,6 +3,9 @@
 Trace the Federal Register documents tagged to 42 CFR Part 438 (Medicaid managed care) since 2016 against
 the official point-in-time eCFR.
 
+**Write-up: [yashgix.github.io/regtrace](https://yashgix.github.io/regtrace/)** (the same page is in
+[`docs/index.html`](docs/index.html))
+
 regtrace is a small deterministic Python library with a read-only JSON API. For every Federal Register
 document tagged to Part 438 since 2016 it answers:
 

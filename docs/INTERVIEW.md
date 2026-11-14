@@ -2,7 +2,7 @@
 
 ## The problem
 
-Readily says it uses AI to "analyze regulatory updates and documents, flag what applies, identify affected policies" and "cite supporting evidence" (<https://www.readily.ai/>). This project builds a checkable federal piece of that on public law: for every Federal Register document touching 42 CFR Part 438 since 2016, which sections changed, whether and when the change appears in the point-in-time eCFR, which eCFR changes no parsed instruction claims, and whether a quoted citation is in force at a date.
+Readily says it uses AI to "analyze regulatory updates and documents, flag what applies, identify affected policies" and "cite supporting evidence" (<https://www.readily.ai/>). This project builds a checkable federal piece of that on public law: for every Federal Register document tagged to 42 CFR Part 438 since 2016, which sections changed, whether and when the change appears in the point-in-time eCFR, which eCFR changes no parsed instruction claims, and whether a quoted citation is in force at a date.
 
 ## Why this approach
 
