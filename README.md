@@ -304,7 +304,7 @@ All responses are JSON; dates are `YYYY-MM-DD`.
 - A rule's own applicability dates inside the regulatory text are not parsed yet. The reconciliation uses
   the document's effective date, or publication date when no effective date is present.
 - Only federal rules are covered. State Medicaid guidance, including DHCS All Plan Letters, is out of
-  scope for this milestone.
+  scope for this version.
 - The parser labels CFR paragraphs from their printed markers and nesting. It is deterministic and
   conservative; unusual XML forms fall back to the `~n` unlabeled form rather than guessing a label.
 

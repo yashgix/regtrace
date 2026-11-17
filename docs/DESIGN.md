@@ -221,4 +221,4 @@ opens a socket.
 
 The React viewer, DHCS All Plan Letters and other state guidance, any LLM compliance flagging, Postgres,
 PDF parsing, and parsing applicability dates from inside regulation text are out of scope for this
-milestone. The library is the deterministic evidence those later layers would be checked against.
+version. The library is the deterministic evidence those later layers would be checked against.
