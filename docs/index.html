@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>regtrace</title>
 <meta name="description" content="Trace the Federal Register documents tagged to 42 CFR Part 438 since 2016 against the official point-in-time eCFR.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: a 760px reading column like a printed rule, with the timeline and status bar widened to 980px. Navy is
    the accent. Status colors only mark reconciliation status. One light theme on purpose. */
@@ -33,7 +30,7 @@
   --s0: 0.8125rem; --s1: 1.0625rem; --s2: 1.25rem; --s3: 1.65rem; --s4: clamp(2.2rem, 5.5vw, 3.2rem);
   --radius: 12px;
 }
-body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: var(--s1); line-height: 1.65; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: var(--s1); line-height: 1.65; }
 .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .col { max-width: 760px; margin-inline: auto; }
 .wide { max-width: 980px; margin-inline: auto; }
@@ -277,9 +274,8 @@ python demo.py --readme README.md</pre>
   </div></section>
 
   <section class="wrap" aria-labelledby="src-h"><div class="col stack">
-    <h2 id="src-h">License and how it was built</h2>
+    <h2 id="src-h">License</h2>
     <p>The code is MIT. The files in <code>upstream/</code> are US federal government works from the eCFR and the Federal Register.</p>
-    <p class="small muted">I directed the project. AI coding agents wrote most of the code and tests, and automated model reviews checked them. Those reviews are not an external audit or certification. The evidence is the code, the tests and the generated results.</p>
     <p><button class="btn" type="button" data-view="overview">← Overview</button></p>
   </div></section>
 </main>

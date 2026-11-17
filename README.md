@@ -320,12 +320,6 @@ Every downloaded file is checksummed in `upstream/MANIFEST.json` (fetch time
 2026-11-10T07:19:08+00:00). `tools/fetch_data.py --verify` recomputes SHA-256 and fails if a byte
 changed; `make data-check` runs it. Re-fetching is explicit; tests and the API never fetch.
 
-## How this was built
-
-Yash Gupta directed the project. AI coding agents (Claude Code and an agent build pipeline) wrote most of the
-code and tests, and automated model reviews checked them. Those reviews are not an external audit. The code,
-tests and rendered tables are the evidence, and no number in the generated block is hand-entered.
-
 ## License
 
 MIT for this repository's code (`LICENSE`). The files in `upstream/` are US federal government works from
